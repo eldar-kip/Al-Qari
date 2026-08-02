@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">YchiCoran</string>
+    <string name="zagolovok_1" translatable="false">здесь пишем первую цифру</string>
+    <string name="zagolovok_2">здесь пишем вторую цифру</string>
+    <string name="button_calculate">Рассчитать</string>
+    <string name="result_label">Результат: </string>
+
+</resources>
