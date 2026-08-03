@@ -18,7 +18,7 @@ const PORT = process.env.NODE_DOCKER_PORT || 8081;
 
 // Сессии
 app.use(session({
-  secret: process.env.SESSION_SECRET || "flover_shop_secret_key_2024",
+  secret: process.env.SESSION_SECRET || "Coran_ychi",
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 24 * 60 * 60 * 1000 } // 24 часа
@@ -43,21 +43,21 @@ app.use(express.static(path.join(__dirname, "public")));
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
-    info: { 
-      title: "Quran API", 
-      version: "1.0.0", 
-      description: "REST API для приложения Коран" 
+    info: {
+      title: "Quran API",
+      version: "1.0.0",
+      description: "REST API для приложения Коран"
     },
     servers: [
-      { 
-        url: `http://localhost:${process.env.NODE_LOCAL_PORT || 8080}`, 
-        description: "Development server" 
+      {
+        url: `http://localhost:${process.env.NODE_LOCAL_PORT || 8080}`,
+        description: "Development server"
       }
     ],
     components: {
       schemas: {},
-      securitySchemes: { 
-        bearerAuth: { type: "http", scheme: "bearer", bearerFormat: "JWT" } 
+      securitySchemes: {
+        bearerAuth: { type: "http", scheme: "bearer", bearerFormat: "JWT" }
       },
     },
     security: [{ bearerAuth: [] }],
@@ -82,7 +82,7 @@ require("./app/routes/playlist.routes")(app);
 
 const connectWithRetry = (attempt = 1) => {
   console.log(`Connecting to database (Attempt ${attempt}/5)...`);
-  
+
   db.sequelize.authenticate()
     .then(() => {
       console.log("Database connection established.");
@@ -91,7 +91,7 @@ const connectWithRetry = (attempt = 1) => {
     .then(async () => {
       console.log("Database schema synced successfully.");
       // await initTriggers(db.sequelize);
-      
+
       app.listen(PORT, () => {
         console.log(`>>> Server is ready on http://localhost:${PORT}`);
         console.log(`>>> Swagger docs available at http://localhost:${process.env.NODE_LOCAL_PORT || 8080}/api-docs`);
@@ -100,7 +100,7 @@ const connectWithRetry = (attempt = 1) => {
     .catch((err) => {
       console.error(`Attempt ${attempt} failed: Unable to connect to Database!`);
       console.error(err.message);
-      
+
       if (attempt < 5) {
         console.log("Retrying in 5 seconds...");
         setTimeout(() => connectWithRetry(attempt + 1), 5000);

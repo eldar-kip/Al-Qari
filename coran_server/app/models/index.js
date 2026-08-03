@@ -21,10 +21,10 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 // --- Модели ---
-db.user         = require("./user.js")(sequelize, Sequelize);
-db.surah        = require("./surah.model.js")(sequelize, Sequelize);
-db.ayat         = require("./ayat.model.js")(sequelize, Sequelize);
-db.playList     = require("./playlist.model.js")(sequelize, Sequelize);
+db.user = require("./user.js")(sequelize, Sequelize);
+db.surah = require("./surah.model.js")(sequelize, Sequelize);
+db.ayat = require("./ayat.model.js")(sequelize, Sequelize);
+db.playList = require("./playlist.model.js")(sequelize, Sequelize);
 db.playListAyat = require("./playlistAyat.model.js")(sequelize, Sequelize);
 db.playListUser = require("./playlistUser.model.js")(sequelize, Sequelize);
 
