@@ -10,9 +10,10 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.ychicoran.dopclasses.BaseActivity;
 import com.example.ychicoran.dopclasses.NavigationProject;
 
-public class QranActivity extends AppCompatActivity {
+public class QranActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,16 +58,23 @@ public class QranActivity extends AppCompatActivity {
                 playBtn.setOnClickListener(v -> {
                     // Тут будет логика запуска аудио для суры № finalI
                 });
+                suraView.setOnClickListener(v -> {
+                    // Создаем намерение (Intent) для перехода в SuraDetals
+                    android.content.Intent intent = new android.content.Intent(QranActivity.this, SuraDetals.class);
+
+                    // Передаем данные на следующий экран (индекс и название суры)
+                    intent.putExtra("SURA_INDEX", finalI);
+                    intent.putExtra("SURA_NAME", suras[finalI]);
+
+                    // Запускаем активность
+                    startActivity(intent);
+                });
                 suraContainer.addView(suraView);
             }
         //навигационное меню
-        NavigationProject.setup(this);
+
 
 
     }
-    @Override
-    public void onStop() {
-        super.onStop();
-        finish();
-    }
+
     }

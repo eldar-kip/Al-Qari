@@ -8,9 +8,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.ychicoran.dopclasses.BaseActivity;
 import com.example.ychicoran.dopclasses.NavigationProject;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +25,4 @@ public class HomeActivity extends AppCompatActivity {
         });
         NavigationProject.setup(this);
     }
-    @Override
-    public void onStop() {
-        super.onStop();
-        finish();
-    }
-    }
+}

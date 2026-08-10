@@ -8,9 +8,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.ychicoran.dopclasses.BaseActivity;
 import com.example.ychicoran.dopclasses.NavigationProject;
 
-public class UserActivity extends AppCompatActivity {
+public class UserActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,13 +23,5 @@ public class UserActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-
-        NavigationProject.setup(this);
     }
-    @Override
-    public void onStop() {
-        super.onStop();
-        finish();
-    }
-    }
+}
