@@ -1,15 +1,14 @@
 package com.example.ychicoran;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.LinearLayout;
-import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.ychicoran.dopclasses.NavigationProject;
 
 public class PlaylistActivity extends AppCompatActivity {
 
@@ -26,25 +25,7 @@ public class PlaylistActivity extends AppCompatActivity {
 
 
 
-    LinearLayout menuHome = findViewById(R.id.menu_home);
-    LinearLayout menuQuran = findViewById(R.id.menu_quran);
-    LinearLayout menuUser = findViewById(R.id.menu_user);
-
-    menuHome.setOnClickListener( v -> {
-        Intent intent = new Intent(PlaylistActivity.this, HomeActivity.class);
-        startActivity(intent);
-        onStop();
-    });
-    menuQuran.setOnClickListener( v -> {
-        Intent intent = new Intent(PlaylistActivity.this, QranActivity.class);
-        startActivity(intent);
-        onStop();
-    });
-    menuUser.setOnClickListener( v -> {
-        Intent intent = new Intent(PlaylistActivity.this, UserActivity.class);
-        startActivity(intent);
-        onStop();
-    });
+    NavigationProject.setup(this);
 }
     @Override
     public void onStop() {

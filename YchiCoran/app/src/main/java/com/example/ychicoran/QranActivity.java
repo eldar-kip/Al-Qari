@@ -1,6 +1,5 @@
 package com.example.ychicoran;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +9,8 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.example.ychicoran.dopclasses.NavigationProject;
 
 public class QranActivity extends AppCompatActivity {
 
@@ -66,24 +64,7 @@ public class QranActivity extends AppCompatActivity {
                 suraContainer.addView(suraView);
             }
 
-        LinearLayout menuHome = findViewById(R.id.menu_home);
-        LinearLayout menuUser = findViewById(R.id.menu_user);
-        LinearLayout menuPlayList = findViewById(R.id.menu_pley_list);
-        menuHome.setOnClickListener(v -> {
-            Intent intent = new Intent(QranActivity.this, HomeActivity.class);
-            startActivity(intent);
-            onStop();
-        });
-        menuUser.setOnClickListener(v -> {
-            Intent intent = new Intent(QranActivity.this, UserActivity.class);
-            startActivity(intent);
-            onStop();
-        });
-        menuPlayList.setOnClickListener(v -> {
-            Intent intent = new Intent(QranActivity.this, PlaylistActivity.class);
-            startActivity(intent);
-            onStop();
-        });
+        NavigationProject.setup(this);
 
 
     }
