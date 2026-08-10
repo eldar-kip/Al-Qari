@@ -4,5 +4,8 @@
     <string name="zagolovok_2">здесь пишем вторую цифру</string>
     <string name="button_calculate">Рассчитать</string>
     <string name="result_label">Результат: </string>
-
+    <string name="down_menu_home">Дом</string>
+    <string name="down_menu_quran">Коран</string>
+    <string name="down_menu_play_list">Плэйлист</string>
+    <string name="down_menu_user">Пользователь</string>
 </resources>

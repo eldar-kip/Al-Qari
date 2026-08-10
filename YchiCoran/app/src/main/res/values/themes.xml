@@ -1,8 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Существующая тема -->
     <style name="Base.Theme.YchiCoran" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <!-- Новая тема для Splash Screen -->
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <!-- Фон заставки -->
+        <item name="windowSplashScreenBackground">@color/green_down_nav</item>
+        <item name="paddingEnd">50dp</item>
+        <item name="paddingStart">50dp</item>
+        <!-- Ваша иконка в центре -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/quran_rehal</item>
+        <!-- Тема, которая применится после исчезновения заставки -->
+        <item name="postSplashScreenTheme">@style/Theme.YchiCoran</item>
     </style>
 
     <style name="Theme.YchiCoran" parent="Base.Theme.YchiCoran" />
