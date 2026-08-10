@@ -2,6 +2,8 @@ package com.example.ychicoran.dopclasses;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.ychicoran.HomeActivity;
@@ -17,8 +19,19 @@ public class NavigationProject {
 
         LinearLayout menuHome = activity.findViewById(R.id.menu_home);
         LinearLayout menuQuran = activity.findViewById(R.id.menu_quran);
-        LinearLayout menuPlayList = activity.findViewById(R.id.menu_pley_list);
+        LinearLayout menuPlayList = activity.findViewById(R.id.menu_play_list);
         LinearLayout menuUser = activity.findViewById(R.id.menu_user);
+
+        if (activity instanceof HomeActivity) {
+            highlightIcon(activity, R.id.menu_home);
+        } else if (activity instanceof QranActivity) {
+            highlightIcon(activity, R.id.menu_quran);
+        } else if (activity instanceof PlaylistActivity) {
+            highlightIcon(activity, R.id.menu_play_list);
+        } else if (activity instanceof UserActivity) {
+            highlightIcon(activity, R.id.menu_user);
+        }
+
         if (menuHome != null){
             menuHome.setOnClickListener(v -> startingActivity(activity, HomeActivity.class));
         }
@@ -41,6 +54,19 @@ public class NavigationProject {
             Intent intent = new Intent(activity, activityClass);
             activity.startActivity(intent);
             activity.finish();
+        }
+    }
+    private static void highlightIcon(Activity activity, int layoutId) {
+        LinearLayout layout = activity.findViewById(layoutId);
+        if (layout != null) {
+            for (int i = 0; i < layout.getChildCount(); i++) {
+                View child = layout.getChildAt(i);
+                if (child instanceof ImageView) {
+                    child.setBackgroundResource(R.drawable.ic_bc);
+                    break;
+                }
+
+            }
         }
     }
 }

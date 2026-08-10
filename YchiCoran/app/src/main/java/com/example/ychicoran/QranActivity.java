@@ -24,7 +24,6 @@ public class QranActivity extends AppCompatActivity {
             LinearLayout suraContainer = findViewById(R.id.sura_list);
             LayoutInflater inflater = LayoutInflater.from(this);
 
-            // Данные (первые 20 сур)
             String[] suras = {
                 "Аль-Фатиха", "Аль-Бакара", "Аль-Имран", "Ан-Ниса", "Аль-Маида",
                 "Аль-Анам", "Аль-Араф", "Аль-Анфаль", "Ат-Тауба", "Юнус",
@@ -40,16 +39,15 @@ public class QranActivity extends AppCompatActivity {
 
             // 2. Цикл создания блоков
             for (int i = 0; i < suras.length; i++) {
-                // Создаем View из шаблона
-                View suraView = inflater.inflate(R.layout.item_sura, suraContainer, false);
 
-                // Находим элементы внутри карточки
+                View suraView = inflater.inflate(R.layout.item_sura, suraContainer, false);
+                // инициализируем элементы карточки суры
                 TextView name = suraView.findViewById(R.id.name_sura);
                 TextView translation = suraView.findViewById(R.id.translation_sura);
                 TextView number = suraView.findViewById(R.id.number_sura);
                 ImageView playBtn = suraView.findViewById(R.id.play_pause_item);
 
-                // Устанавливаем данные
+                //присваевает значения элементам
                 name.setText(arabicNames[i]);
                 translation.setText(suras[i]);
                 number.setText("Сура " + (i + 1));
@@ -59,11 +57,9 @@ public class QranActivity extends AppCompatActivity {
                 playBtn.setOnClickListener(v -> {
                     // Тут будет логика запуска аудио для суры № finalI
                 });
-
-                // 3. Добавляем карточку в общий список
                 suraContainer.addView(suraView);
             }
-
+        //навигационное меню
         NavigationProject.setup(this);
 
 
