@@ -10,7 +10,7 @@ import com.example.ychicoran.HomeActivity;
 import com.example.ychicoran.PlaylistActivity;
 import com.example.ychicoran.QranActivity;
 import com.example.ychicoran.R;
-import com.example.ychicoran.UserActivity;
+import com.example.ychicoran.SettingsActivity;
 
 public class NavigationProject {
     public static void setup(final Activity activity){
@@ -20,7 +20,7 @@ public class NavigationProject {
         LinearLayout menuHome = activity.findViewById(R.id.menu_home);
         LinearLayout menuQuran = activity.findViewById(R.id.menu_quran);
         LinearLayout menuPlayList = activity.findViewById(R.id.menu_play_list);
-        LinearLayout menuUser = activity.findViewById(R.id.menu_user);
+        LinearLayout menuUser = activity.findViewById(R.id.menu_settings);
 
         if (activity instanceof HomeActivity) {
             highlightIcon(activity, R.id.menu_home);
@@ -28,8 +28,8 @@ public class NavigationProject {
             highlightIcon(activity, R.id.menu_quran);
         } else if (activity instanceof PlaylistActivity) {
             highlightIcon(activity, R.id.menu_play_list);
-        } else if (activity instanceof UserActivity) {
-            highlightIcon(activity, R.id.menu_user);
+        } else if (activity instanceof SettingsActivity) {
+            highlightIcon(activity, R.id.menu_settings);
         }
 
         if (menuHome != null){
@@ -42,7 +42,7 @@ public class NavigationProject {
             menuPlayList.setOnClickListener(v -> startingActivity(activity, PlaylistActivity.class));
         }
         if (menuUser != null){
-            menuUser.setOnClickListener(v -> startingActivity(activity, UserActivity.class));
+            menuUser.setOnClickListener(v -> startingActivity(activity, SettingsActivity.class));
         }
 
     }

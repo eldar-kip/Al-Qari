@@ -9,7 +9,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.ychicoran.dopclasses.BaseActivity;
 
-public class UserActivity extends BaseActivity {
+public class SettingsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
