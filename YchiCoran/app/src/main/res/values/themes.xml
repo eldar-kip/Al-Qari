@@ -2,9 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.YchiCoran" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="colorPrimary">@color/green_down_nav</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@color/ic_launcher_background</item>
     </style>
 
     <style name="Theme.YchiCoran" parent="Base.Theme.YchiCoran" />

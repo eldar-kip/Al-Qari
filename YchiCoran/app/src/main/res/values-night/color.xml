@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ic_launcher_background">#19F67C</color>
+        <color name = "down_nav">#0D2A1D</color>
 </resources>
