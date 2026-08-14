@@ -7,114 +7,60 @@
     android:layout_height="wrap_content"
     android:baselineAligned="false"
     android:orientation="horizontal"
-    android:paddingBottom="10dp"
+    android:paddingBottom="20dp"
     android:paddingTop="5dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.55"
     app:layout_constraintStart_toStartOf="parent">
-
     <LinearLayout
         android:id="@+id/menu_home"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:orientation="vertical">
-
+        style="@style/block_nav_bar">
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center"
+            android:id="@+id/img_menu_home"
+            style="@style/img_nav_bar"
             app:srcCompat="@drawable/ic_menu_home" />
-
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:fontFamily="@font/inter"
-            android:textColor="@color/down_nav_item_color"
-            android:textStyle="bold"
+            android:id="@+id/text_menu_home"
+            style="@style/text_nav_bar"
             android:text="@string/down_menu_home" />
     </LinearLayout>
-
     <LinearLayout
         android:id="@+id/menu_quran"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:orientation="vertical">
-
+        style="@style/block_nav_bar">
         <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center"
+            android:id="@+id/img_menu_quran"
+            style="@style/img_nav_bar"
             app:srcCompat="@drawable/ic_menu_quran" />
-
         <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter"
-            android:textStyle="bold"
-            android:textColor="@color/down_nav_item_color"
-            android:text="@string/down_menu_quran"
-            android:textAlignment="center" />
+            android:id="@+id/text_menu_quran"
+            style="@style/text_nav_bar"
+            android:text="@string/down_menu_quran" />
     </LinearLayout>
-
     <LinearLayout
         android:id="@+id/menu_play_list"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:orientation="vertical">
-
+        style="@style/block_nav_bar">
         <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center"
+            android:id="@+id/img_menu_play_list"
+            style="@style/img_nav_bar"
             app:srcCompat="@drawable/ic_menu_play_list" />
-
         <TextView
-            android:id="@+id/textView5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter"
-            android:textStyle="bold"
-            android:textColor="@color/down_nav_item_color"
-            android:text="@string/down_menu_play_list"
-            android:textAlignment="center" />
+            android:id="@+id/text_menu_play_list"
+            style="@style/text_nav_bar"
+            android:text="@string/down_menu_play_list" />
     </LinearLayout>
-
     <LinearLayout
         android:id="@+id/menu_settings"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:orientation="vertical">
+        style="@style/block_nav_bar">
 
         <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center"
+            android:id="@+id/img_menu_settings"
+            style="@style/img_nav_bar"
             app:srcCompat="@drawable/ic_menu_settings" />
 
         <TextView
-            android:id="@+id/textView6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter"
-            android:textStyle="bold"
-            android:textColor="@color/down_nav_item_color"
-            android:text="@string/down_menu_settings"
-            android:textAlignment="center" />
+            android:id="@+id/text_menu_settings"
+            style="@style/text_nav_bar"
+            android:text="@string/down_menu_settings" />
     </LinearLayout>
 </LinearLayout>
