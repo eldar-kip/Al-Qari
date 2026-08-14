@@ -5,5 +5,5 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green_down_nav"
+    android:background="@color/ic_launcher_background"
     tools:context=".MainActivity"/> <!-- This closes the tag completely -->

@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
+
+
+
+    <color name="background_layout">#FCFBF7</color>
+    <color name="background_card">#FFFFFF</color>
+    <color name="background_activ_element">#C19B2E</color>
+
+
+    <color name="down_nav_item_color">#A0B1A7</color>
+    <color name="background_nav_bar">#FDFBF7</color>
+
+
+    <!--text-->
+    <color name="h1_text_color">#1A3329</color>
+    <color name="h2_text_color">#C19B2E</color>
+    <color name="standart_txt">#70877A</color>
+
+
     <color name="white">#FFFFFFFF</color>
-    <color name="down_nav">#9989FF5D</color>
-    <color name="ic_launcher_background">#0D844A</color>
+    <color name="black">#FF000000</color>
 </resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <color name="background_layout">#0B1C16</color>
+        <color name="background_nav_bar">#112D21</color>
+        <color name="background_card">#122E22</color>
+        <color name="background_activ_element">#D2AD38</color>
+        <color name="down_nav_item_color">#8EAA9E</color>
+
+        <!--text-->
+        <color name="h1_text_color">#FDFBF6</color>
+        <color name="h2_text_color">#D4AF37</color>
+        <color name="standart_txt">#8FAD9F</color>
+
+
+</resources>

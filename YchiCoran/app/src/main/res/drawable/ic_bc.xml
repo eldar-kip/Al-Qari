@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
+
     <!-- Цвет заливки -->
-    <solid android:color="#E0E0E0" />
+    <solid android:color="@color/background_activ_element"/>
+    
 
     <!-- Закругление углов -->
-    <corners android:radius="40dp" />
+    <corners android:radius="18dp" />
 
     <!-- Обводка (если нужна) -->
     <stroke
-        android:width="2dp"
-        android:color="#9989FF5D" />
+        android:width="6dp"
+        android:color="@color/ic_launcher_background" />
 </shape>

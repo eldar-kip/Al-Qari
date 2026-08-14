@@ -2,7 +2,18 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.YchiCoran" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="android:windowBackground">@color/ic_launcher_background</item>
+        <item name="android:windowBackground">@color/background_layout</item>
+        <item name="android:statusBarColor">@color/background_layout</item>
+        <item name="android:navigationBarColor">@color/background_nav_bar</item>
+        <item name="android:colorBackground">@color/background_layout</item>
+
+        <item name="android:textColorPrimary">@color/h1_text_color</item>
+        <item name="android:textColorSecondary">@color/h2_text_color</item>
+        <item name="android:textColorTertiary">@color/standart_txt</item>
+        <item name="android:textColorHint">@color/standart_txt</item>
+
+        <item name="android:colorControlHighlight">@color/background_activ_element</item>
+        <item name="android:colorControlActivated">@color/background_activ_element</item>
     </style>
 
     <style name="Theme.YchiCoran" parent="Base.Theme.YchiCoran" />

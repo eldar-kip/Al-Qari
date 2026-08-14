@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-        <color name = "down_nav">#0D2A1D</color>
+    <string name="inter">Inter</string>
 </resources>

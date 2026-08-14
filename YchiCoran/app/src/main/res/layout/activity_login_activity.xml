@@ -66,7 +66,7 @@
 
             android:textSize="16sp"
             android:textAllCaps="false"
-            android:background="@color/green_down_nav"
+            android:background="@color/background_activ_element"
             style="@style/Widget.MaterialComponents.Button" />
 
     </LinearLayout>
