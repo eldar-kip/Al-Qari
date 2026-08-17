@@ -9,4 +9,18 @@
     <string name="down_menu_play_list">Плэйлист</string>
     <string name="down_menu_settings">Настройки</string>
     <string name="inter">Inter</string>
+    
+    
+    <string name="text_setting_language">Язык</string>
+    <string name="text_setting_theme">Тема</string>
+    <string name="text_setting_reader">Чтец</string>
+    <string name="text_setting_style_text">Стиль текста</string>
+    
+    <string name="user_name">Эльдар</string>
+    <string name="user_status">Базовый тариф</string>"
+
+    <string name="theme_system">Системная</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Темная</string>
+    
 </resources>

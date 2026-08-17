@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.core.content.ContextCompat;
+
 import com.example.ychicoran.HomeActivity;
 import com.example.ychicoran.PlaylistActivity;
 import com.example.ychicoran.QranActivity;
@@ -31,7 +33,6 @@ public class NavigationProject {
         } else if (activity instanceof SettingsActivity) {
             highlightIcon(activity, R.id.menu_settings);
         }
-
         if (menuHome != null){
             menuHome.setOnClickListener(v -> startingActivity(activity, HomeActivity.class));
         }
@@ -57,15 +58,25 @@ public class NavigationProject {
         }
     }
     private static void highlightIcon(Activity activity, int layoutId) {
-        LinearLayout layout = activity.findViewById(layoutId);
-        if (layout != null) {
-            for (int i = 0; i < layout.getChildCount(); i++) {
-                View child = layout.getChildAt(i);
-                if (child instanceof ImageView) {
-                    child.setBackgroundResource(R.drawable.ic_bc);
-                    break;
-                }
+        // Список ID всех кнопок
+        int[] menuIds = {R.id.menu_home, R.id.menu_quran, R.id.menu_play_list, R.id.menu_settings};
 
+        int activeColor = ContextCompat.getColor(activity, R.color.background_activ_element); // Золотой
+        int inactiveColor = ContextCompat.getColor(activity, R.color.down_nav_item_color);     // Серый
+
+        for (int menuId : menuIds) {
+            LinearLayout leoyt = activity.findViewById(menuId);
+
+            for (int i = 0; i < leoyt.getChildCount(); i++){
+                View child = leoyt.getChildAt(i);
+                if (child instanceof ImageView){
+                     if (menuId == layoutId){
+                         ((ImageView) child).setColorFilter(activeColor);
+                     } else {
+                         ((ImageView) child).setColorFilter(inactiveColor);
+                     }
+                     break;
+                }
             }
         }
     }

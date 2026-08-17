@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="block_settings">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">15dp</item>
+        <item name="android:background">@color/background_card</item>
+    </style>
+
+    <style name="img_settings">
+        <item name="android:layout_width">25dp</item>
+        <item name="android:layout_height">25dp</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+    </style>
+
+    <style name="text_settings">
+        <item name="android:text">TextView</item>
+        <item name="android:layout_width">150dp</item>
+        <item name="android:layout_height">16dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:textColor">@color/standart_txt</item>
+        <item name="android:textSize">14sp</item>
+        <item name="layout_constraintHorizontal_bias">0.0</item>
+
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+    </style>
+
+    <style name="spriner_settings">
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">end|center</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:textColor">@color/standart_txt</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">end</item>
+    </style>
+</resources>
