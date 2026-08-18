@@ -18,9 +18,9 @@ public class Language_theme {
         if (spinner == null) return;
 
         // Список отображаемых имен
-        String[] items = {"Русский", "English", "Къырымтатар"};
+        String[] items = {"Русский", "English"};
         // Соответствующие коды языков (ISO)
-        String[] langCodes = {"ru", "en", "crh"};
+        String[] langCodes = {"ru", "eng"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 activity,
@@ -65,9 +65,7 @@ public class Language_theme {
         });
     }
 
-    /**
-     * Метод для физической смены Locale в приложении
-     */
+
     public static void setLocale(Context context, String langCode) {
         Locale locale = new Locale(langCode);
         Locale.setDefault(locale);

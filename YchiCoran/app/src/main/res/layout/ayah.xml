@@ -29,7 +29,7 @@
             />
         <TextView
             android:id="@+id/ayah_transcription_text"
-            android:text="аят"
+            android:text="text"
             android:padding="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

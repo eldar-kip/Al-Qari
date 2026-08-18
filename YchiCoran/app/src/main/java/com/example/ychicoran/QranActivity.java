@@ -1,5 +1,6 @@
 package com.example.ychicoran;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.ychicoran.ApiMP3Quran.interfacess.SurashNameInterface;
+import com.example.ychicoran.ApiMP3Quran.model.Surash;
+import com.example.ychicoran.ApiMP3Quran.model.SurashName;
 import com.example.ychicoran.dopclasses.BaseActivity;
-import com.example.ychicoran.dopclasses.NavigationProject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class QranActivity extends BaseActivity {
+    private List<SurashName> arabList, systemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,60 +34,95 @@ public class QranActivity extends BaseActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_qran);
 
-            // 1. Находим контейнер
-            LinearLayout suraContainer = findViewById(R.id.sura_list);
-            LayoutInflater inflater = LayoutInflater.from(this);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://mp3quran.net/api/v3/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-            String[] suras = {
-                "Аль-Фатиха", "Аль-Бакара", "Аль-Имран", "Ан-Ниса", "Аль-Маида",
-                "Аль-Анам", "Аль-Араф", "Аль-Анфаль", "Ат-Тауба", "Юнус",
-                "Худ", "Юсуф", "Ар-Рад", "Ибрахим", "Аль-Хиджр",
-                "Ан-Нахль", "Аль-Исра", "Аль-Кахф", "Марьям", "Та Ха"
-            };
-            String[] arabicNames = {
-                "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة",
-                "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس",
-                "هود", "يوسف", "الرعد", "إبراهيم", "الحجر",
-                "النحل", "الإسراء", "الكهف", "مريم", "طه"
-            };
-
-            // 2. Цикл создания блоков
-            for (int i = 0; i < suras.length; i++) {
-
-                View suraView = inflater.inflate(R.layout.item_sura, suraContainer, false);
-                // инициализируем элементы карточки суры
-                TextView name = suraView.findViewById(R.id.name_sura);
-                TextView translation = suraView.findViewById(R.id.translation_sura);
-                TextView number = suraView.findViewById(R.id.number_sura);
-                ImageView playBtn = suraView.findViewById(R.id.play_pause_item);
-
-                //присваевает значения элементам
-                name.setText(arabicNames[i]);
-                translation.setText(suras[i]);
-                number.setText("Сура " + (i + 1));
-
-                // Обработка нажатия на кнопку плеер этой конкретной суры
-                int finalI = i;
-                playBtn.setOnClickListener(v -> {
-                    // Тут будет логика запуска аудио для суры № finalI
-                });
-                suraView.setOnClickListener(v -> {
-                    // Создаем намерение (Intent) для перехода в SuraDetals
-                    android.content.Intent intent = new android.content.Intent(QranActivity.this, SuraDetals.class);
-
-                    // Передаем данные на следующий экран (индекс и название суры)
-                    intent.putExtra("SURA_INDEX", finalI);
-                    intent.putExtra("SURA_NAME", suras[finalI]);
-
-                    // Запускаем активность
-                    startActivity(intent);
-                });
-                suraContainer.addView(suraView);
+        SurashNameInterface service = retrofit.create(SurashNameInterface.class);
+        arabicSura(service);
+        sistemSura(service);
+    }
+    private void arabicSura(SurashNameInterface service) {
+        service.getSuraw("ar").enqueue(new Callback<Surash>() {
+            @Override
+            public void onResponse(Call<Surash> call, Response<Surash> response) {
+                if (response.isSuccessful()&&response.body()!=null) {
+                    arabList = response.body().getSuwar();
+                }
+                if (arabList != null && systemList != null) {
+                    // ОБА списка готовы! Теперь можно строить цикл
+                    updateUI();
+                }
             }
-        //навигационное меню
+            @Override
+            public void onFailure(Call<Surash> call, Throwable t) {
+                t.printStackTrace();
 
+            }
+        });
+    }
+    private void sistemSura(SurashNameInterface service) {
+        service.getSuraw(Locale.getDefault().getLanguage()).enqueue(new Callback<Surash>() {
+            @Override
+            public void onResponse(Call<Surash> call, Response<Surash> response) {
+                if (response.isSuccessful()&&response.body()!=null) {
+                    systemList = response.body().getSuwar();
+                }
+                if (arabList != null && systemList != null) {
+                    // ОБА списка готовы! Теперь можно строить цикл
+                    updateUI();
+                }
+            }
+            @Override
+            public void onFailure(Call<Surash> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void updateUI() {
+        LinearLayout containerSura = findViewById(R.id.sura_list);
+        if (containerSura == null) return;
+        containerSura.removeAllViews();
+        LayoutInflater inflater = LayoutInflater.from(this);
+        for (int i = 0; i < 114; i++) {
+            SurashName arabSura = arabList.get(i);
+            SurashName systemSura = systemList.get(i);
+            View suraView = inflater.inflate(R.layout.item_sura, containerSura, false);
+
+            TextView numberSura = suraView.findViewById(R.id.number_sura);
+            TextView arabName = suraView.findViewById(R.id.name_sura);
+            TextView systemName = suraView.findViewById(R.id.translation_sura);
+            ImageView playBtn = suraView.findViewById(R.id.play_pause_item);
+
+            numberSura.setText("Сура " + arabSura.getId());
+            arabName.setText(arabSura.getName());
+            systemName.setText(systemSura.getName());
+
+            int finalI = i;
+            playBtn.setOnClickListener(v -> {
+                // Сюда добавьте вашу логику запуска аудио
+            });
+
+            // Обработка клика по всей карточке (переход к деталям)
+            suraView.setOnClickListener(v -> {
+                Intent intent = new Intent(QranActivity.this, SuraDetals.class);
+
+                // Передаем индекс и название (используем перевод для названия на след. экране)
+                intent.putExtra("SURA_INDEX", finalI);
+                intent.putExtra("SURA_NAME", systemSura.getName());
+                intent.putExtra("SURA_ID", arabSura.getId());
+
+                startActivity(intent);
+            });
+
+            containerSura.addView(suraView);
+
+        }
 
 
     }
 
-    }
+
+}
