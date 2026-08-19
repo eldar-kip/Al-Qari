@@ -20,7 +20,7 @@ public class Language_theme {
         // Список отображаемых имен
         String[] items = {"Русский", "English"};
         // Соответствующие коды языков (ISO)
-        String[] langCodes = {"ru", "eng"};
+        String[] langCodes = {"ru", "en"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 activity,
