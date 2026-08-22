@@ -7,19 +7,22 @@
     android:layout_height="match_parent"
     tools:context=".SuraDetals">
 
+    <include layout="@layout/header_sura_detals" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_suras"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingTop="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/player_container"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_suras"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:paddingTop="10dp"
-            android:clipToPadding="false"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/down_menu" />
-
-        <!-- навигационное меню -->
-        <include layout="@layout/down_audio_pleir" />
-
+    <include
+        android:id="@+id/player_container"
+        layout="@layout/down_audio_pleir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

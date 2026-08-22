@@ -1,15 +1,29 @@
 package com.example.ychicoran;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class SuraDetals extends AppCompatActivity {
+import com.example.ychicoran.ApiQuranJson.Classes.SuraText;
+import com.example.ychicoran.ApiQuranJson.Intrface.TextSuraInterface;
+import com.example.ychicoran.dopclasses.BaseActivity;
+
+import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class SuraDetals extends BaseActivity {
+
+    private RecyclerView recyclerView;
+    private AyahAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,88 +31,56 @@ public class SuraDetals extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sura_detals);
 
-        android.content.Intent intent = getIntent();
-
-        // Получаем индекс суры (по умолчанию 0, если ничего не передали)
-        int suraIndex = intent.getIntExtra("SURA_INDEX", 0);
-
-        // Получаем название суры (например, чтобы вывести его в заголовке)
-        String suraName = intent.getStringExtra("SURA_NAME");
-
-        // Здесь вы можете использовать конструкцию if-else или switch-case
-        // чтобы загрузить нужный массив в зависимости от выбранной суры
-
-        if (suraIndex == 0) {
-            // Загружаем массив для "Аль-Фатиха" (ваш текущий код)
-        } else if (suraIndex == 1) {
-            // Загружаем массив для "Аль-Бакара"
+        recyclerView = findViewById(R.id.recycler_suras);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        findViewById(R.id.btn_back_sura).setOnClickListener(v -> finish());
+        Intent intent = getIntent();
+        String suraId = intent.getStringExtra("SURA_ID");
+        
+        if (suraId != null) {
+            fetchSuraText(suraId);
         }
-        LinearLayout ayahContainer = findViewById(R.id.ayah_list);
-        LayoutInflater inflater = LayoutInflater.from(this);
+    }
 
-        // Полный двумерный массив суры Аль-Фатиха (7 аятов)
-        String[][] fatihaData = {
-                {
-                        "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ",
-                        "Бисмилляхир-Рахманир-Рахим",
-                        "Во имя Аллаха, Милостивого, Милосердного!",
-                        "1:1"
-                },
-                {
-                        "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",
-                        "Альхамду лилляхи Раббиль-алямин",
-                        "Хвала Аллаху, Господу миров,",
-                        "1:2"
-                },
-                {
-                        "الرَّحْمَنِ الرَّحِيمِ",
-                        "Ар-Рахманир-Рахим",
-                        "Милостивому, Милосердному,",
-                        "1:3"
-                },
-                {
-                        "مَالِكِ يَوْمِ الدِّينِ",
-                        "Малики яумид-дин",
-                        "Властелину Дня воздаяния!",
-                        "1:4"
-                },
-                {
-                        "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
-                        "Ийяка набуду ва ийяка настаин",
-                        "Тебе одному мы поклоняемся и Тебя одного молим о помощи.",
-                        "1:5"
-                },
-                {
-                        "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ",
-                        "Ихдинас-сыраталь-мустаким",
-                        "Веди нас прямым путем,",
-                        "1:6"
-                },
-                {
-                        "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ",
-                        "Сыратал-лязина ан’амта алейхим, гайриль-магдуби алейхим ва ляд-даллин",
-                        "путем тех, кого Ты облагодетельствовал, не тех, на кого пал гнев, и не заблудших.",
-                        "1:7"
+    private void fetchSuraText(String suraId) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/chapters/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TextSuraInterface service = retrofit.create(TextSuraInterface.class);
+
+        String lang = Locale.getDefault().getLanguage();
+        // В API для русского используется "ru", для английского "en". 
+        // По умолчанию ставим "ru"
+        if (!lang.equals("en")) {
+            lang = "ru"; 
+        }
+
+        service.getTextSura(lang, suraId).enqueue(new Callback<SuraText>() {
+            @Override
+            public void onResponse(Call<SuraText> call, Response<SuraText> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    SuraText suraData = response.body();
+                    
+                    // Обновляем заголовки в header
+                    android.widget.TextView titleTranslate = findViewById(R.id.name_sura_translate);
+                    android.widget.TextView titleTransliteration = findViewById(R.id.name_sura_transliteration);
+                    android.widget.TextView titleArabic = findViewById(R.id.arabic_name_sura);
+
+                    if (titleTranslate != null) titleTranslate.setText(suraData.getTranslation());
+                    if (titleTransliteration != null) titleTransliteration.setText(suraData.getTransliteration());
+                    if (titleArabic != null) titleArabic.setText(suraData.getName());
+
+                    adapter = new AyahAdapter(suraData.getVerses(), suraId);
+                    recyclerView.setAdapter(adapter);
                 }
-        };
+            }
 
-        // В цикле достаем данные по индексам
-        for (int i = 0; i < fatihaData.length; i++) {
-            View ayahView = inflater.inflate(R.layout.ayah, ayahContainer, false);
-
-            TextView ayahArabText = ayahView.findViewById(R.id.ayah_arab_text);
-            TextView ayahTranscriptionText = ayahView.findViewById(R.id.ayah_transcription_text);
-            TextView ayahTranslateText = ayahView.findViewById(R.id.ayah_translate_text);
-            TextView ayahNumber = ayahView.findViewById(R.id.number_ayah);
-
-
-            ayahArabText.setText(fatihaData[i][0]);
-            ayahTranscriptionText.setText(fatihaData[i][1]);
-            ayahTranslateText.setText(fatihaData[i][2]);
-            ayahNumber.setText(fatihaData[i][3]);
-
-            ayahContainer.addView(ayahView);
-        }
-
+            @Override
+            public void onFailure(Call<SuraText> call, Throwable t) {
+                Log.e("SuraDetals", "Error fetching sura text", t);
+            }
+        });
     }
 }
