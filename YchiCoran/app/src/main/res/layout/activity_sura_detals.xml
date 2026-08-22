@@ -7,23 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".SuraDetals">
 
-    <ScrollView
-        android:id="@+id/ayah_conteiner"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:id="@+id/ayah_list"
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_suras"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="0dp"
+            android:paddingTop="10dp"
+            android:clipToPadding="false"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/down_menu" />
 
-        </LinearLayout>
+        <!-- навигационное меню -->
+        <include layout="@layout/down_audio_pleir" />
 
-    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
