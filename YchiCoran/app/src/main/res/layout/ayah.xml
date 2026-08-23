@@ -31,6 +31,10 @@
         <TextView
             android:id="@+id/ayah_transcription_text"
             android:text="text"
+            android:layout_gravity="end"
+            android:gravity="top"
+            android:layout_marginRight="10dp"
+
             android:padding="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
