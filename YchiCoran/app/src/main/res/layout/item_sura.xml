@@ -1,60 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/background_card"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
     android:layout_margin="10dp"
+    app:cardBackgroundColor="@android:color/transparent"
     app:cardCornerRadius="20dp"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    app:cardMaxElevation="4dp">
 
-    <TextView
-        android:id="@+id/name_sura"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
-        android:fontFamily="@font/amiri_bold"
-        android:text="Название"
-        android:textSize="25sp" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/card_gradiend">
 
-    <TextView
-        android:id="@+id/number_sura"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="5dp"
-        android:text="Сура №"
-        android:textColor="#FFD700"
-        android:textStyle="bold"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/name_sura"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="Название"
+            android:textColor="@color/white"
+            android:textSize="34sp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/translation_sura"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:text="Перевод"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/translation_sura"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Перевод"
+            android:textColor="@color/white"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/number_sura"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/inter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Сура 1"
+            android:textColor="@color/h2_text_color"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/translation_sura"/>
+        <TextView
+            android:id="@+id/type_countAuyh_sura"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Мединска \u2022 12 аятов "
+            android:textSize="14dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/number_sura" />
 
-    <SeekBar
-        android:id="@+id/seekBar_item"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_marginLeft="40dp"
-        android:layout_marginBottom="10dp"/>
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-    <ImageView
-        android:id="@+id/play_pause_item"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="bottom|start"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="5dp"
-        app:srcCompat="@android:drawable/ic_media_play" />
+            <ImageView
+                android:layout_gravity="center"
+                android:id="@+id/play_pause_item"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+
+                app:srcCompat="@android:drawable/ic_media_play"
+                app:tint="@color/white" />
+
+            <SeekBar
+                android:id="@+id/seekBar_item"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:layout_gravity="center"
+                android:id="@+id/ndumber_sura"
+                android:fontFamily="@font/inter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1:30"
+                android:textColor="@color/standart_txt"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

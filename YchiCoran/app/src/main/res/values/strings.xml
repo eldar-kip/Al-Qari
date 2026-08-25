@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">YchiCoran</string>
+    <string name="app_name">Al-Qari</string>
     <string name="zagolovok_1" translatable="false">здесь пишем первую цифру</string>
     <string name="zagolovok_2">здесь пишем вторую цифру</string>
     <string name="button_calculate">Рассчитать</string>
@@ -10,7 +10,9 @@
     <string name="down_menu_settings">Настройки</string>
     <string name="inter">Inter</string>
     
-    
+    <string name="title_seting_read">ЧТЕНИЕ &amp; АУДИО</string>
+    <string name="title_seting_them">ВНЕШНИЙ ВИД</string>
+
     <string name="text_setting_language">Язык</string>
     <string name="text_setting_theme">Тема</string>
     <string name="text_setting_reader">Чтец</string>

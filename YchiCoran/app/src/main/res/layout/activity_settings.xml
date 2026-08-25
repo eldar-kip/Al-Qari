@@ -5,149 +5,266 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity">
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/UserIcon"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="60dp"
-        app:cardCornerRadius="75dp"
-        android:background="#00000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/img_user"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_settings_avatar" />
-    </androidx.cardview.widget.CardView>
+    android:paddingTop="20dp">
 
     <TextView
-        android:id="@+id/user_name"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/h1_text_color"
-        android:textStyle="bold"
-        android:textSize="22dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/user_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/UserIcon" />
-
-    <TextView
-        android:id="@+id/user_status"
+        android:id="@+id/title_settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/user_status"
-        android:textSize="18dp"
-        android:textColor="@color/h2_text_color"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/merriweather_bold"
+        android:text="@string/down_menu_settings"
+        android:textColor="@color/h1_text_color"
+        android:textSize="28dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/card_gradiend"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_name" />
+        app:layout_constraintTop_toBottomOf="@+id/title_settings">
+
+        <ImageView
+            android:id="@+id/avatar_settings"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/yelov_cyrell"
+            android:padding="30dp"
+            android:src="@drawable/ic_settings_avatar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/UserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="Odzha Eldar"
+            android:textColor="@color/h1_text_color"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/avatar_settings"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.26999998" />
+
+        <TextView
+            android:id="@+id/User_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="Premium"
+            android:textColor="@color/h2_text_color"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/avatar_settings"
+            app:layout_constraintTop_toBottomOf="@+id/UserName" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/title_reading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/title_seting_read"
+        android:textColor="@color/standart_txt"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
     <androidx.cardview.widget.CardView
-        android:layout_width="350dp"
-        app:cardCornerRadius="20dp"
+        android:id="@+id/cardView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="10dp"
         android:background="@color/background_card"
+        app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_status">
+        app:layout_constraintTop_toBottomOf="@+id/title_reading">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.constraintlayout.widget.ConstraintLayout style="@style/block_settings">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/img_theme"
-                    style="@style/img_settings"
-                    android:src="@drawable/ic_settings_theme" />
-
-                <TextView
-                    android:id="@+id/text_theme"
-                    style="@style/text_settings"
-                    android:text="@string/text_setting_theme"
-                    app:layout_constraintEnd_toStartOf="@+id/spinner_theme"
-                    app:layout_constraintStart_toEndOf="@+id/img_theme" />
-
-                <Spinner
-                    android:id="@+id/spinner_theme"
-                    style="@style/spriner_settings"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout style="@style/block_settings">
 
                 <ImageView
-
                     android:id="@+id/img_reader"
                     style="@style/img_settings"
-                    android:src="@drawable/ic_settings_reader" />
+                    android:src="@drawable/ic_settings_reader"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/text_reader"
                     style="@style/text_settings"
                     android:text="@string/text_setting_reader"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/spinner_reader"
-                    app:layout_constraintStart_toEndOf="@+id/img_reader"/>
+                    app:layout_constraintStart_toEndOf="@+id/img_reader"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Spinner
                     android:id="@+id/spinner_reader"
                     style="@style/spriner_settings"
-                    android:prompt="@string/text_setting_theme"/>
+                    android:prompt="@string/text_setting_theme"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout style="@style/block_settings" >
+            <androidx.constraintlayout.widget.ConstraintLayout style="@style/block_settings">
 
                 <ImageView
                     android:id="@+id/img_target_language"
                     style="@style/img_settings"
-                    android:src="@drawable/ic_settings_language"/>
+                    android:src="@drawable/ic_settings_language"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/text_target_language"
                     style="@style/text_settings"
                     android:text="@string/text_setting_language"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/spinner_target_language"
-                    app:layout_constraintStart_toEndOf="@+id/img_target_language" />
+                    app:layout_constraintStart_toEndOf="@+id/img_target_language"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Spinner
                     android:id="@+id/spinner_target_language"
-                    style="@style/spriner_settings" />
+                    style="@style/spriner_settings"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout style="@style/block_settings">
 
                 <ImageView
                     android:id="@+id/img_style_text"
                     style="@style/img_settings"
-                    android:src="@drawable/ic_settings_style_text"/>
+                    android:src="@drawable/ic_settings_style_text"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/text_style_text"
                     style="@style/text_settings"
                     android:text="@string/text_setting_style_text"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/spinner_style_text"
-                    app:layout_constraintStart_toEndOf="@+id/img_style_text"/>
+                    app:layout_constraintStart_toEndOf="@+id/img_style_text"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <Spinner
                     android:id="@+id/spinner_style_text"
-                    style="@style/spriner_settings"/>
+                    style="@style/spriner_settings"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
         </LinearLayout>
-
-
     </androidx.cardview.widget.CardView>
 
-    <include layout="@layout/down_navbar" />
+    <TextView
+        android:id="@+id/setting_them"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/title_seting_them"
+        android:textColor="@color/standart_txt"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/block_theme"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/background_card"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setting_them">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout style="@style/block_settings">
+
+                <ImageView
+                    android:id="@+id/img_theme"
+                    style="@style/img_settings"
+                    android:src="@drawable/ic_settings_theme"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/text_theme"
+                    style="@style/text_settings"
+                    android:text="@string/text_setting_theme"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/spinner_theme"
+                    app:layout_constraintStart_toEndOf="@+id/img_theme"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Spinner
+                    android:id="@+id/spinner_theme"
+                    style="@style/spriner_settings"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <include
+        layout="@layout/down_navbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

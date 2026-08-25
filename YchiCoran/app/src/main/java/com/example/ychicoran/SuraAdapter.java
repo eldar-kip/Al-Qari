@@ -34,7 +34,7 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.SuraViewHolder
         SuraList sura = suraList.get(position);
 
 
-        holder.numberSura.setText(String.valueOf(sura.getId()));
+        holder.numberSura.setText("Cура "+String.valueOf(sura.getId()));
         holder.arabName.setText(sura.getName());
         holder.systemName.setText(sura.getTransliteration());
 

@@ -66,6 +66,7 @@ public class NavigationProject {
 
         for (int menuId : menuIds) {
             LinearLayout leoyt = activity.findViewById(menuId);
+            if (leoyt == null) continue;
 
             for (int i = 0; i < leoyt.getChildCount(); i++){
                 View child = leoyt.getChildAt(i);
