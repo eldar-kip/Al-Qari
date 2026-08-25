@@ -105,7 +105,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <androidx.constraintlayout.widget.ConstraintLayout style="@style/block_settings">
 
+                <ImageView
+                    android:id="@+id/img_style_text"
+                    style="@style/img_settings"
+                    android:src="@drawable/ic_settings_style_text"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/text_style_text"
+                    style="@style/text_settings"
+                    android:text="@string/text_setting_style_text"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/spinner_style_text"
+                    app:layout_constraintStart_toEndOf="@+id/img_style_text"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Spinner
+                    android:id="@+id/spinner_riwayah"
+                    style="@style/spriner_settings"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout style="@style/block_settings">
 
@@ -161,35 +187,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout style="@style/block_settings">
-
-                <ImageView
-                    android:id="@+id/img_style_text"
-                    style="@style/img_settings"
-                    android:src="@drawable/ic_settings_style_text"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/text_style_text"
-                    style="@style/text_settings"
-                    android:text="@string/text_setting_style_text"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/spinner_style_text"
-                    app:layout_constraintStart_toEndOf="@+id/img_style_text"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Spinner
-                    android:id="@+id/spinner_style_text"
-                    style="@style/spriner_settings"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

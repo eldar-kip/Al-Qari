@@ -19,7 +19,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.ychicoran.ApiQuranJson.Classes.SuraList;
 import com.example.ychicoran.ApiQuranJson.Intrface.SuraListInterface;
+import com.example.ychicoran.Api_Al_Qrai.Class.RiwayahListClass;
+import com.example.ychicoran.Api_Al_Qrai.Interfases.RiwayahListInterfase;
+import com.example.ychicoran.dopclasses.RetrofitClient;
 
+import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,12 +36,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
     private boolean log_person = true;
     public static List<SuraList> systemList;
+    public static List<String> riwayahList;
 
     private void parsingSurash() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/chapters/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/chapters/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
         SuraListInterface service = retrofit.create(SuraListInterface.class);
         service.getListSurashes(Locale.getDefault().getLanguage()).enqueue(new Callback<List<SuraList>>(){
@@ -54,6 +59,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    private void parsigRiwayahList(){
+
+        RiwayahListInterfase service = RetrofitClient.getClient("https://bba7k5bpe2kl91r7r8qk.containers.yandexcloud.net/").create(RiwayahListInterfase.class);
+        service.getRiwayahList().enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                if (response.isSuccessful() && response.body() != null){
+                    System.out.println("Тут все ок 1+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    riwayahList = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+                System.out.println("Блять проеб 1 _-----------------------------------------------------------------------------------------------");
+                t.printStackTrace();
+            }
+        });
+    }
 
 
 
@@ -63,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         parsingSurash();
+        parsigRiwayahList();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -75,8 +100,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
-            // Закрываем MainActivity, чтобы пользователь не вернулся на него кнопкой "Назад"
-            finish();
 
     }
 }
