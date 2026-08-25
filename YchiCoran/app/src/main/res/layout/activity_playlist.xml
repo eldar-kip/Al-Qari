@@ -6,5 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PlaylistActivity">
+    <TextView
+        android:id="@+id/title_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/merriweather_bold"
+        android:text="@string/down_menu_play_list"
+        android:textColor="@color/h1_text_color"
+        android:textSize="28dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <include layout="@layout/down_navbar" />
 </androidx.constraintlayout.widget.ConstraintLayout>
