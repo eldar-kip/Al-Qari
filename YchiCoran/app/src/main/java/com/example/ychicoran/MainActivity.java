@@ -20,6 +20,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.ychicoran.ApiQuranJson.Classes.SuraList;
 import com.example.ychicoran.ApiQuranJson.Intrface.SuraListInterface;
 import com.example.ychicoran.Api_Al_Qrai.Class.RiwayahListClass;
+import com.example.ychicoran.Api_Al_Qrai.Class.Reciters.Reciter;
+import com.example.ychicoran.Api_Al_Qrai.Interfases.ReciterInterface;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.RiwayahListInterfase;
 import com.example.ychicoran.dopclasses.RetrofitClient;
 
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean log_person = true;
     public static List<SuraList> systemList;
     public static List<String> riwayahList;
+    public static Reciter recitersData;
 
     private void parsingSurash() {
             Retrofit retrofit = new Retrofit.Builder()
@@ -79,6 +82,25 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void parsingReciterList(){
+        ReciterInterface service = RetrofitClient.getClient("https://bba7k5bpe2kl91r7r8qk.containers.yandexcloud.net/").create(ReciterInterface.class);
+        service.getRecitrList().enqueue(new Callback<Reciter>() {
+            @Override
+            public void onResponse(Call<Reciter> call, Response<Reciter> response) {
+                if (response.isSuccessful() && response.body() != null){
+                    System.out.println("Чтецы загружены+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    recitersData = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Reciter> call, Throwable t) {
+                System.out.println("Ошибка загрузки чтецов-----------------------------------------------------------------------------------------------");
+                t.printStackTrace();
+            }
+        });
+    }
+
 
 
     @Override
@@ -88,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         parsingSurash();
         parsigRiwayahList();
+        parsingReciterList();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);

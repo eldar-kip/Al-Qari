@@ -20,6 +20,7 @@ public class Riwayah_them {
     private static List<String> riwayahList;
     public static void  SinnerRiwayah(Activity activity, Spinner spinner){
         if (spinner == null) return;
+
         riwayahList  = MainActivity.riwayahList;
         System.out.println("____________________________________________________________________________________________"+riwayahList+"+++++++++++++++++++++++++++++++++++++++++++++++++++");
         if (riwayahList == null || riwayahList.isEmpty()) {
@@ -43,10 +44,14 @@ public class Riwayah_them {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                SharedPreferences.Editor editor =  save.edit();
-                editor.putInt("riwayah", position);
-                editor.putString("riwayah_name", riwayahList.get(position));
-                editor.apply();
+                int currentSaved = save.getInt("riwayah", -1);
+                if (currentSaved != position) {
+                    SharedPreferences.Editor editor = save.edit();
+                    editor.putInt("riwayah", position);
+                    editor.putString("riwayah_name", riwayahList.get(position));
+                    editor.apply();
+                    activity.recreate(); // Пересоздаем для обновления списка чтецов
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
