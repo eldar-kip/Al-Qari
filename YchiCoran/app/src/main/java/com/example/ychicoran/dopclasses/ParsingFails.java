@@ -3,8 +3,6 @@ package com.example.ychicoran.dopclasses;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.ychicoran.ApiQuranJson.Classes.SuraList;
-import com.example.ychicoran.ApiQuranJson.Intrface.SuraListInterface;
 import com.example.ychicoran.Api_Al_Qrai.Class.Reciters.Reciter;
 import com.example.ychicoran.Api_Al_Qrai.Class.Text.ArabText;
 import com.example.ychicoran.Api_Al_Qrai.Class.Text.TranscriptionSura;
@@ -27,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ParsingFails {
 
-    public static List<SuraList> systemList;
+
     public static List<String> riwayahList;
     public static List<String> tafsirList;
     public static List<TranscriptionSura> transcriptionSuraList;
@@ -43,7 +41,7 @@ public class ParsingFails {
     }
 
     public void parsingSystem(){
-        parsingSurash();
+       // parsingSurash();
         parsigRiwayahList();
         parsingReciterList();
         parsingTafsirList();
@@ -52,27 +50,27 @@ public class ParsingFails {
         parsingTranslate();
     }
 
-    private void parsingSurash() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/chapters/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        SuraListInterface service = retrofit.create(SuraListInterface.class);
-        service.getListSurashes(Locale.getDefault().getLanguage()).enqueue(new Callback<List<SuraList>>(){
-            @Override
-            public void onResponse(Call<List<SuraList>> call, Response<List<SuraList>> response) {
-                if (response.isSuccessful()&&response.body()!=null) {
-                    systemList = response.body();
-
-                }
-            }
-            @Override
-            public void onFailure(Call<List<SuraList>> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-    }
+//    private void parsingSurash() {
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl("https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/chapters/")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        SuraListInterface service = retrofit.create(SuraListInterface.class);
+//        service.getListSurashes(Locale.getDefault().getLanguage()).enqueue(new Callback<List<SuraList>>(){
+//            @Override
+//            public void onResponse(Call<List<SuraList>> call, Response<List<SuraList>> response) {
+//                if (response.isSuccessful()&&response.body()!=null) {
+//                    systemList = response.body();
+//
+//                }
+//            }
+//            @Override
+//            public void onFailure(Call<List<SuraList>> call, Throwable t) {
+//                t.printStackTrace();
+//            }
+//        });
+//    }
     private void parsigRiwayahList(){
 
         RiwayahListInterfase service = RetrofitClient.getClient(url).create(RiwayahListInterfase.class);
@@ -134,7 +132,8 @@ public class ParsingFails {
 
         SharedPreferences prefs = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
         String riwayahType = prefs.getString("riwayah_name", "hafs").toLowerCase();
-        String lang = Locale.getDefault().getLanguage();
+        String lang = prefs.getString("language", "en").toLowerCase();
+
 
         TranscriptionInterface service = RetrofitClient.getClient(url).create(TranscriptionInterface.class);
         service.getTranscription(riwayahType, lang).enqueue(new Callback<List<TranscriptionSura>>() {
@@ -174,8 +173,11 @@ public class ParsingFails {
         });
     }
     private void parsingTranslate(){
+        SharedPreferences prefs = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        String lang = prefs.getString("language", "en").toLowerCase();
+
         TranslateSuraInterface service = RetrofitClient.getClient(url).create(TranslateSuraInterface.class);
-        service.getTranslate(Locale.getDefault().getLanguage()).enqueue(new Callback<List<TranslateSura>>() {
+        service.getTranslate(lang).enqueue(new Callback<List<TranslateSura>>() {
             @Override
             public void onResponse(Call<List<TranslateSura>> call, Response<List<TranslateSura>> response) {
                 if (response.isSuccessful() && response.body() != null){

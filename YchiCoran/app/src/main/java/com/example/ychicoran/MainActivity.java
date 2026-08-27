@@ -17,8 +17,6 @@ import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.ychicoran.ApiQuranJson.Classes.SuraList;
-import com.example.ychicoran.ApiQuranJson.Intrface.SuraListInterface;
 import com.example.ychicoran.Api_Al_Qrai.Class.RiwayahListClass;
 import com.example.ychicoran.Api_Al_Qrai.Class.Reciters.Reciter;
 import com.example.ychicoran.Api_Al_Qrai.Class.Tafsir;

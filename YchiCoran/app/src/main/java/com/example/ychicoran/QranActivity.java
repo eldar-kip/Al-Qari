@@ -11,13 +11,6 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.recyclerview.widget.RecyclerView;
 
-//import com.example.ychicoran.ApiMP3Quran.interfacess.SurashNameInterface;
-//import com.example.ychicoran.ApiMP3Quran.model.Surash;
-//import com.example.ychicoran.ApiMP3Quran.model.SurashName;
-import com.example.ychicoran.ApiQuranJson.Classes.SuraList;
-import com.example.ychicoran.ApiQuranJson.Classes.SuraText;
-import com.example.ychicoran.ApiQuranJson.Intrface.SuraListInterface;
-import com.example.ychicoran.ApiQuranJson.Intrface.TextSuraInterface;
 import com.example.ychicoran.dopclasses.BaseActivity;
 import com.example.ychicoran.dopclasses.ParsingFails;
 
@@ -42,7 +35,7 @@ public class QranActivity extends BaseActivity {
         recyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
 
         // Берем готовый список из MainActivity и ставим его в адаптер
-        if (ParsingFails.systemList != null) {
+        if ( ParsingFails.arabText != null && ParsingFails.transcriptionSuraList != null) {
             SuraAdapter adapter = new SuraAdapter(ParsingFails.arabText, ParsingFails.transcriptionSuraList,this);
             recyclerView.setAdapter(adapter);
         }

@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.ychicoran.ApiQuranJson.Classes.SuraList;
 import java.util.List;
 
 import com.example.ychicoran.Api_Al_Qrai.Class.SuraAydio;
