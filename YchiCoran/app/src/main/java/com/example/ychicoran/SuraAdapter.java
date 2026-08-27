@@ -23,6 +23,7 @@ import android.widget.SeekBar;
 import java.util.List;
 import android.content.SharedPreferences;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.SuraAudioInterface;
+import com.example.ychicoran.dopclasses.ParsingFails;
 import com.example.ychicoran.dopclasses.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -104,7 +105,7 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.SuraViewHolder
 
         // Пытаемся найти bitrate для выбранного чтеца
         String bitrate = "32k"; // Значение по умолчанию
-        Reciter data = MainActivity.recitersData;
+        Reciter data = ParsingFails.recitersData;
         if (data != null) {
             if (riwayahType.contains("hafs") && data.getHafs() != null) {
                 for (Haf h : data.getHafs()) if (h.getName().equals(reciterName)) bitrate = h.getBitrate();

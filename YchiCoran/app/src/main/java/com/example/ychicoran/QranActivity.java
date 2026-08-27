@@ -19,6 +19,7 @@ import com.example.ychicoran.ApiQuranJson.Classes.SuraText;
 import com.example.ychicoran.ApiQuranJson.Intrface.SuraListInterface;
 import com.example.ychicoran.ApiQuranJson.Intrface.TextSuraInterface;
 import com.example.ychicoran.dopclasses.BaseActivity;
+import com.example.ychicoran.dopclasses.ParsingFails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +42,8 @@ public class QranActivity extends BaseActivity {
         recyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
 
         // Берем готовый список из MainActivity и ставим его в адаптер
-        if (MainActivity.systemList != null) {
-            SuraAdapter adapter = new SuraAdapter(MainActivity.systemList, this);
+        if (ParsingFails.systemList != null) {
+            SuraAdapter adapter = new SuraAdapter(ParsingFails.systemList, this);
             recyclerView.setAdapter(adapter);
         }
     }

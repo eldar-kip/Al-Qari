@@ -18,7 +18,7 @@ import java.util.Locale;
 public class Tafsi_them {
     public static void  SinnerTafsir(Activity activity, Spinner spinner) {
         if (spinner == null) return;
-        List<String> allTafsir = MainActivity.tafsirList;
+        List<String> allTafsir = ParsingFails.tafsirList;
         if (allTafsir == null || allTafsir.isEmpty()) {
             return;
         }

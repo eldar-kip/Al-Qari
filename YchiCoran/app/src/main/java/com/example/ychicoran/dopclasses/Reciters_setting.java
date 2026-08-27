@@ -22,7 +22,7 @@ public class Reciters_setting {
     public static void setupReciterSpinner(Activity activity, Spinner spinner) {
         if (spinner == null) return;
 
-        Reciter data = MainActivity.recitersData;
+        Reciter data = ParsingFails.recitersData;
         if (data == null) {
             return;
         }

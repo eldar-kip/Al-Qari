@@ -21,7 +21,7 @@ public class Riwayah_them {
     public static void  SinnerRiwayah(Activity activity, Spinner spinner){
         if (spinner == null) return;
 
-        riwayahList  = MainActivity.riwayahList;
+        riwayahList  = ParsingFails.riwayahList;
         if (riwayahList == null || riwayahList.isEmpty()) {
             return;
         }
