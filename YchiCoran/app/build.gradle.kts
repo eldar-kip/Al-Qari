@@ -34,6 +34,7 @@ android {
 }
 
 dependencies {
+    implementation("org.greenrobot:eventbus:3.3.1")
     implementation("androidx.media3:media3-exoplayer:1.4.1")
     implementation("androidx.media3:media3-ui:1.4.1")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

@@ -14,6 +14,8 @@ import com.example.ychicoran.Api_Al_Qrai.Interfases.TafsirInterface;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.TranscriptionInterface;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.TranslateSuraInterface;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -35,9 +37,36 @@ public class ParsingFails {
     public static Reciter recitersData;
     private String url = "https://bba7k5bpe2kl91r7r8qk.containers.yandexcloud.net/";
     private Context context;
+    private SharedPreferences prefs;
+    private SharedPreferences.OnSharedPreferenceChangeListener listener;
+
 
     public ParsingFails(Context context) {
+
         this.context = context;
+        this.prefs = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
+
+        // Инициализируем слушатель
+        this.listener = (sharedPreferences, key) -> {
+            if (key != null) {
+                switch (key) {
+                    case "language":
+                        System.out.println("Настройки: Язык изменен, перепарсиваем...........................................................");
+                        parsingTranscription(); // Зависит от языка
+                        parsingTranslate();     // Зависит от языка
+                        break;
+                    case "riwayah_name":
+                        System.out.println("Настройки: Риваят изменен, перепарсиваем...................................................................");
+                        parsingTranscription(); // Зависит от риваята
+                        parsingArabicText();    // Зависит от риваята
+                        break;
+                }
+            }
+        };
+
+        // Регистрируем слушатель
+        this.prefs.registerOnSharedPreferenceChangeListener(listener);
+
     }
 
     public void parsingSystem(){
@@ -50,27 +79,6 @@ public class ParsingFails {
         parsingTranslate();
     }
 
-//    private void parsingSurash() {
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/chapters/")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//
-//        SuraListInterface service = retrofit.create(SuraListInterface.class);
-//        service.getListSurashes(Locale.getDefault().getLanguage()).enqueue(new Callback<List<SuraList>>(){
-//            @Override
-//            public void onResponse(Call<List<SuraList>> call, Response<List<SuraList>> response) {
-//                if (response.isSuccessful()&&response.body()!=null) {
-//                    systemList = response.body();
-//
-//                }
-//            }
-//            @Override
-//            public void onFailure(Call<List<SuraList>> call, Throwable t) {
-//                t.printStackTrace();
-//            }
-//        });
-//    }
     private void parsigRiwayahList(){
 
         RiwayahListInterfase service = RetrofitClient.getClient(url).create(RiwayahListInterfase.class);
@@ -142,6 +150,9 @@ public class ParsingFails {
                 if (response.isSuccessful() && response.body() != null){
                     System.out.println("Transcription загружен+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                     transcriptionSuraList = response.body();
+                    EventBus.getDefault().post(new DataUpdatedEvent("Transcription"));
+                    EventBus.getDefault().post(new DataUpdatedEvent("Arabic"));
+
                 }
             }
             @Override
@@ -163,6 +174,7 @@ public class ParsingFails {
                 if (response.isSuccessful() && response.body() != null){
                     System.out.println("Arabic загружен+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                     arabText = response.body();
+                    EventBus.getDefault().post(new DataUpdatedEvent("Arabic"));
                 }
             }
             @Override
@@ -183,6 +195,7 @@ public class ParsingFails {
                 if (response.isSuccessful() && response.body() != null){
                     System.out.println("Translate загружен+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                     translateSurasList = response.body();
+                    EventBus.getDefault().post(new DataUpdatedEvent("Translate"));
                 }
             }
             @Override
