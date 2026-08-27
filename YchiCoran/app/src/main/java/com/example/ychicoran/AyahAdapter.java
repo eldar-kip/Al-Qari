@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ychicoran.ApiQuranJson.Classes.Verse;
+import com.example.ychicoran.Api_Al_Qrai.Class.Text.Verse;
 
 import java.util.HashSet;
 import java.util.List;
@@ -18,7 +18,9 @@ import java.util.Set;
 
 public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder> {
 
-    private final List<Verse> ayahList;
+    private final List<Verse> transcription;
+    private final List<Verse> arabText;
+    private final List<Verse> translate;
     private final String suraId;
     private final Set<Integer> selectedPositions = new HashSet<>();
     private boolean isSelectionMode = false;
@@ -33,8 +35,10 @@ public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder
         this.selectionListener = listener;
     }
 
-    public AyahAdapter(List<Verse> ayahList, String suraId) {
-        this.ayahList = ayahList;
+    public AyahAdapter(List<Verse> transcription, List<Verse> arabText, List<Verse> translate, String suraId) {
+        this.transcription = transcription;
+        this.arabText = arabText;
+        this.translate = translate;
         this.suraId = suraId;
     }
 
@@ -47,12 +51,14 @@ public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull AyahViewHolder holder, int position) {
-        Verse verse = ayahList.get(position);
+        Verse arabVerse = arabText.get(position);
+        Verse transcrVerse = transcription.get(position);
+        Verse translVerse = translate.get(position);
 
-        holder.arabText.setText(verse.getText());
-        holder.transcriptionText.setText(verse.getTransliteration());
-        holder.translateText.setText(verse.getTranslation());
-        holder.numberAyah.setText(suraId + ":" + verse.getId());
+        holder.arabText.setText(arabVerse.getText());
+        holder.transcriptionText.setText(transcrVerse.getText());
+        holder.translateText.setText(translVerse.getText());
+        holder.numberAyah.setText(suraId + ":" + arabVerse.getId());
 
         // Visual feedback for selection
         if (selectedPositions.contains(position)) {
@@ -104,12 +110,13 @@ public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder
 
     @Override
     public int getItemCount() {
-        return ayahList != null ? ayahList.size() : 0;
+        return arabText != null ? arabText.size() : 0;
     }
 
     public static class AyahViewHolder extends RecyclerView.ViewHolder {
         TextView arabText, transcriptionText, translateText, numberAyah;
         CardView cardView;
+
         public AyahViewHolder(@NonNull View itemView) {
             super(itemView);
             arabText = itemView.findViewById(R.id.ayah_arab_text);

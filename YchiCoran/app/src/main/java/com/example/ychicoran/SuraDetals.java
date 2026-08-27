@@ -2,28 +2,28 @@ package com.example.ychicoran;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ychicoran.ApiQuranJson.Classes.SuraText;
-import com.example.ychicoran.ApiQuranJson.Intrface.TextSuraInterface;
+import com.example.ychicoran.Api_Al_Qrai.Class.Text.ArabText;
+import com.example.ychicoran.Api_Al_Qrai.Class.Text.TranscriptionSura;
+import com.example.ychicoran.Api_Al_Qrai.Class.Text.TranslateSura;
+import com.example.ychicoran.Api_Al_Qrai.Class.Text.Verse;
 import com.example.ychicoran.dopclasses.BaseActivity;
+import com.example.ychicoran.dopclasses.ParsingFails;
 
-import java.util.Locale;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import java.util.List;
 
 public class SuraDetals extends BaseActivity {
 
     private RecyclerView recyclerView;
     private AyahAdapter adapter;
+    private List<TranscriptionSura> transcriptionSuraList = ParsingFails.transcriptionSuraList;
+    private List<ArabText> arabText = ParsingFails.arabText;
+    private List<TranslateSura> translateSurasList = ParsingFails.translateSurasList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,53 +34,42 @@ public class SuraDetals extends BaseActivity {
         recyclerView = findViewById(R.id.recycler_suras);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         findViewById(R.id.btn_back_sura).setOnClickListener(v -> finish());
+
         Intent intent = getIntent();
-        String suraId = intent.getStringExtra("SURA_ID");
-        
-        if (suraId != null) {
-            fetchSuraText(suraId);
-        }
-    }
+        String suraIdStr = intent.getStringExtra("SURA_ID");
 
-    private void fetchSuraText(String suraId) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/chapters/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        TextSuraInterface service = retrofit.create(TextSuraInterface.class);
-
-        String lang = Locale.getDefault().getLanguage();
-        // В API для русского используется "ru", для английского "en". 
-        // По умолчанию ставим "ru"
-        if (!lang.equals("en")) {
-            lang = "ru"; 
+        if (suraIdStr == null) {
+            finish();
+            return;
         }
 
-        service.getTextSura(lang, suraId).enqueue(new Callback<SuraText>() {
-            @Override
-            public void onResponse(Call<SuraText> call, Response<SuraText> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    SuraText suraData = response.body();
-                    
-                    // Обновляем заголовки в header
-                    android.widget.TextView titleTranslate = findViewById(R.id.name_sura_translate);
-                    android.widget.TextView titleTransliteration = findViewById(R.id.name_sura_transliteration);
-                    android.widget.TextView titleArabic = findViewById(R.id.arabic_name_sura);
+        int suraIndex = Integer.parseInt(suraIdStr) - 1;
 
-                    if (titleTranslate != null) titleTranslate.setText(suraData.getTranslation());
-                    if (titleTransliteration != null) titleTransliteration.setText(suraData.getTransliteration());
-                    if (titleArabic != null) titleArabic.setText(suraData.getName());
+        TextView titleTranslate = findViewById(R.id.name_sura_translate);
+        TextView titleTransliteration = findViewById(R.id.name_sura_transliteration);
+        TextView titleArabic = findViewById(R.id.arabic_name_sura);
 
-                    adapter = new AyahAdapter(suraData.getVerses(), suraId);
-                    recyclerView.setAdapter(adapter);
-                }
-            }
+        if (translateSurasList != null && suraIndex < translateSurasList.size()) {
+            if (titleTranslate != null) titleTranslate.setText(translateSurasList.get(suraIndex).getName());
+        }
 
-            @Override
-            public void onFailure(Call<SuraText> call, Throwable t) {
-                Log.e("SuraDetals", "Error fetching sura text", t);
-            }
-        });
+        if (transcriptionSuraList != null && suraIndex < transcriptionSuraList.size()) {
+            if (titleTransliteration != null) titleTransliteration.setText(transcriptionSuraList.get(suraIndex).getName());
+        }
+
+        if (arabText != null && suraIndex < arabText.size()) {
+            if (titleArabic != null) titleArabic.setText(arabText.get(suraIndex).getName());
+        }
+
+        if (arabText != null && transcriptionSuraList != null && translateSurasList != null &&
+                suraIndex >= 0 && suraIndex < arabText.size()) {
+
+            List<Verse> arabVerses = arabText.get(suraIndex).getVerses();
+            List<Verse> transcrVerses = transcriptionSuraList.get(suraIndex).getVerses();
+            List<Verse> translVerses = translateSurasList.get(suraIndex).getVerses();
+
+            adapter = new AyahAdapter(transcrVerses, arabVerses, translVerses, suraIdStr);
+            recyclerView.setAdapter(adapter);
+        }
     }
 }
