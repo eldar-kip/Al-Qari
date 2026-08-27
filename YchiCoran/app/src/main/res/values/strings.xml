@@ -13,10 +13,11 @@
     <string name="title_seting_read">ЧТЕНИЕ &amp; АУДИО</string>
     <string name="title_seting_them">ВНЕШНИЙ ВИД</string>
 
+    <string name="text_setting_tasfir">Тасфир</string>
     <string name="text_setting_language">Язык</string>
     <string name="text_setting_theme">Тема</string>
     <string name="text_setting_reader">Чтец</string>
-    <string name="text_setting_style_text">Стиль текста</string>
+    <string name="text_setting_style_text">Реваях</string>
     
     <string name="user_name">Эльдар</string>
     <string name="user_status">Базовый тариф</string>"

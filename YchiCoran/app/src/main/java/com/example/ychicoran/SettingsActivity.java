@@ -12,6 +12,7 @@ import com.example.ychicoran.dopclasses.Language_theme;
 import com.example.ychicoran.dopclasses.Reciters_setting;
 import com.example.ychicoran.dopclasses.Riwayah_them;
 import com.example.ychicoran.dopclasses.System_theme;
+import com.example.ychicoran.dopclasses.Tafsi_them;
 
 public class SettingsActivity extends BaseActivity {
 
@@ -24,5 +25,6 @@ public class SettingsActivity extends BaseActivity {
         Riwayah_them.SinnerRiwayah(this, findViewById(R.id.spinner_riwayah));
         Reciters_setting.setupReciterSpinner(this, findViewById(R.id.spinner_reader));
         Language_theme.setupLanguageSpinner(this, findViewById(R.id.spinner_target_language));
+        Tafsi_them.SinnerTafsir(this, findViewById(R.id.spinner_tafsir));
     }
 }

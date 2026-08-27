@@ -22,7 +22,6 @@ public class Riwayah_them {
         if (spinner == null) return;
 
         riwayahList  = MainActivity.riwayahList;
-        System.out.println("____________________________________________________________________________________________"+riwayahList+"+++++++++++++++++++++++++++++++++++++++++++++++++++");
         if (riwayahList == null || riwayahList.isEmpty()) {
             return;
         }

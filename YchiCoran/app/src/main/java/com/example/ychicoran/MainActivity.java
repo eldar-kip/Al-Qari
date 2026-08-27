@@ -21,11 +21,14 @@ import com.example.ychicoran.ApiQuranJson.Classes.SuraList;
 import com.example.ychicoran.ApiQuranJson.Intrface.SuraListInterface;
 import com.example.ychicoran.Api_Al_Qrai.Class.RiwayahListClass;
 import com.example.ychicoran.Api_Al_Qrai.Class.Reciters.Reciter;
+import com.example.ychicoran.Api_Al_Qrai.Class.Tafsir;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.ReciterInterface;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.RiwayahListInterfase;
+import com.example.ychicoran.Api_Al_Qrai.Interfases.TafsirInterface;
 import com.example.ychicoran.dopclasses.RetrofitClient;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean log_person = true;
     public static List<SuraList> systemList;
     public static List<String> riwayahList;
+    public static List<String> tafsirList;
     public static Reciter recitersData;
 
     private void parsingSurash() {
@@ -100,6 +104,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    private void parsingTafsirList(){
+        TafsirInterface service = RetrofitClient.getClient("https://bba7k5bpe2kl91r7r8qk.containers.yandexcloud.net/").create(TafsirInterface.class);
+        service.getTafsir().enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                if (response.isSuccessful() && response.body() != null){
+                    System.out.println("Tafsir загружен+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    tafsirList = response.body();
+
+                }
+            }
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+                System.out.println("Ошибка загрузки Tafsir-----------------------------------------------------------------------------------------------");
+                t.printStackTrace();
+            }
+        });
+
+    }
 
 
 
@@ -111,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
         parsingSurash();
         parsigRiwayahList();
         parsingReciterList();
+        parsingTafsirList();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
