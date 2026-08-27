@@ -1,11 +1,18 @@
 package com.example.ychicoran.dopclasses;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.example.ychicoran.ApiQuranJson.Classes.SuraList;
 import com.example.ychicoran.ApiQuranJson.Intrface.SuraListInterface;
 import com.example.ychicoran.Api_Al_Qrai.Class.Reciters.Reciter;
+import com.example.ychicoran.Api_Al_Qrai.Class.Text.ArabText;
+import com.example.ychicoran.Api_Al_Qrai.Class.Text.TranscriptionSura;
+import com.example.ychicoran.Api_Al_Qrai.Interfases.ArabTextInterface;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.ReciterInterface;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.RiwayahListInterfase;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.TafsirInterface;
+import com.example.ychicoran.Api_Al_Qrai.Interfases.TranscriptionInterface;
 
 import java.util.List;
 import java.util.Locale;
@@ -21,13 +28,24 @@ public class ParsingFails {
     public static List<SuraList> systemList;
     public static List<String> riwayahList;
     public static List<String> tafsirList;
+    public static List<TranscriptionSura> transcriptionSuraList;
+    public static List<ArabText> arabText;
+
     public static Reciter recitersData;
+    private String url = "https://bba7k5bpe2kl91r7r8qk.containers.yandexcloud.net/";
+    private Context context;
+
+    public ParsingFails(Context context) {
+        this.context = context;
+    }
 
     public void parsingSystem(){
         parsingSurash();
         parsigRiwayahList();
         parsingReciterList();
         parsingTafsirList();
+        parsingTranscription();
+        parsingArabicText();
     }
 
     private void parsingSurash() {
@@ -53,7 +71,7 @@ public class ParsingFails {
     }
     private void parsigRiwayahList(){
 
-        RiwayahListInterfase service = RetrofitClient.getClient("https://bba7k5bpe2kl91r7r8qk.containers.yandexcloud.net/").create(RiwayahListInterfase.class);
+        RiwayahListInterfase service = RetrofitClient.getClient(url).create(RiwayahListInterfase.class);
         service.getRiwayahList().enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
@@ -72,7 +90,7 @@ public class ParsingFails {
     }
 
     private void parsingReciterList(){
-        ReciterInterface service = RetrofitClient.getClient("https://bba7k5bpe2kl91r7r8qk.containers.yandexcloud.net/").create(ReciterInterface.class);
+        ReciterInterface service = RetrofitClient.getClient(url).create(ReciterInterface.class);
         service.getRecitrList().enqueue(new Callback<Reciter>() {
             @Override
             public void onResponse(Call<Reciter> call, Response<Reciter> response) {
@@ -90,7 +108,7 @@ public class ParsingFails {
         });
     }
     private void parsingTafsirList(){
-        TafsirInterface service = RetrofitClient.getClient("https://bba7k5bpe2kl91r7r8qk.containers.yandexcloud.net/").create(TafsirInterface.class);
+        TafsirInterface service = RetrofitClient.getClient(url).create(TafsirInterface.class);
         service.getTafsir().enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
@@ -106,7 +124,50 @@ public class ParsingFails {
                 t.printStackTrace();
             }
         });
+    }
 
+    private void parsingTranscription(){
+
+        SharedPreferences prefs = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        String riwayahType = prefs.getString("riwayah_name", "hafs").toLowerCase();
+        String lang = Locale.getDefault().getLanguage();
+
+        TranscriptionInterface service = RetrofitClient.getClient(url).create(TranscriptionInterface.class);
+        service.getTranscription(riwayahType, lang).enqueue(new Callback<List<TranscriptionSura>>() {
+            @Override
+            public void onResponse(Call<List<TranscriptionSura>> call, Response<List<TranscriptionSura>> response) {
+                if (response.isSuccessful() && response.body() != null){
+                    System.out.println("Transcription загружен+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    transcriptionSuraList = response.body();
+                }
+            }
+            @Override
+            public void onFailure(Call<List<TranscriptionSura>> call, Throwable t) {
+                System.out.println("Ошибка загрузки Transcription-----------------------------------------------------------------------------------------------");
+                t.printStackTrace();
+            }
+        });
+
+    }
+    private void  parsingArabicText(){
+        SharedPreferences prefs = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        String riwayahType = prefs.getString("riwayah_name", "hafs").toLowerCase();
+
+        ArabTextInterface service = RetrofitClient.getClient(url).create(ArabTextInterface.class);
+        service.getArabText(riwayahType).enqueue(new Callback<List<ArabText>>() {
+            @Override
+            public void onResponse(Call<List<ArabText>> call, Response<List<ArabText>> response) {
+                if (response.isSuccessful() && response.body() != null){
+                    System.out.println("Arabic загружен+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    arabText = response.body();
+                }
+            }
+            @Override
+            public void onFailure(Call<List<ArabText>> call, Throwable t) {
+                System.out.println("Ошибка загрузки Arabic-----------------------------------------------------------------------------------------------");
+                t.printStackTrace();
+            }
+        });
     }
 
 }

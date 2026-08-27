@@ -17,10 +17,10 @@ import com.example.ychicoran.Api_Al_Qrai.Class.Reciters.Haf;
 import com.example.ychicoran.Api_Al_Qrai.Class.Reciters.Qaloun;
 import com.example.ychicoran.Api_Al_Qrai.Class.Reciters.Reciter;
 import com.example.ychicoran.Api_Al_Qrai.Class.Reciters.Warsh;
-import com.example.ychicoran.MainActivity;
+import com.example.ychicoran.Api_Al_Qrai.Class.Text.ArabText;
+import com.example.ychicoran.Api_Al_Qrai.Class.Text.TranscriptionSura;
 import com.example.ychicoran.dopclasses.AudioPlayer;
 import android.widget.SeekBar;
-import java.util.List;
 import android.content.SharedPreferences;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.SuraAudioInterface;
 import com.example.ychicoran.dopclasses.ParsingFails;
@@ -32,12 +32,14 @@ import androidx.media3.exoplayer.ExoPlayer;
 
 public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.SuraViewHolder> {
 
-    private final List<SuraList> suraList;
+    private final List<ArabText> arabText;
+    private final List<TranscriptionSura> transcriptionSuraList;
     private final Context context;
 
-    public SuraAdapter(List<SuraList> suraList, Context context) {
-        this.suraList = suraList;
+    public SuraAdapter(List<ArabText> arabText, List<TranscriptionSura> transcriptionSuraList, Context context) {
+        this.arabText = arabText;
         this.context = context;
+        this.transcriptionSuraList = transcriptionSuraList;
     }
 
     @NonNull
@@ -49,15 +51,18 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.SuraViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull SuraViewHolder holder, int position) {
-        SuraList sura = suraList.get(position);
+        //SuraList sura = arabText.get(position);
+        TranscriptionSura transcriptionSura = transcriptionSuraList.get(position);
+        ArabText arabText = ParsingFails.arabText.get(position);
 
 
-        holder.numberSura.setText("Cура "+String.valueOf(sura.getId()));
-        holder.arabName.setText(sura.getName());
-        holder.systemName.setText(sura.getTransliteration());
+
+        holder.numberSura.setText("Cура "+String.valueOf(transcriptionSura.getId()));
+        holder.arabName.setText(arabText.getName());
+        holder.systemName.setText(transcriptionSura.getName());
 
         // Проверка по ID суры, играет ли она сейчас
-        if (sura.getId() == AudioPlayer.getCurrentSuraId()) {
+        if (arabText.getId() == AudioPlayer.getCurrentSuraId()) {
             ExoPlayer p = AudioPlayer.getPlayer(context);
             if (p.getPlayWhenReady()) { // Используем playWhenReady для мгновенной реакции UI
                 holder.playBtn.setImageResource(R.drawable.media_playr_pause);
@@ -74,14 +79,14 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.SuraViewHolder
         // Клик по всей карточке
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, SuraDetals.class);
-            intent.putExtra("SURA_ID", String.valueOf(sura.getId()));
-            intent.putExtra("SURA_NAME", sura.getTranslation());
+            intent.putExtra("SURA_ID", String.valueOf(arabText.getId()));
+            intent.putExtra("SURA_NAME", arabText.getName());
             context.startActivity(intent);
         });
 
         // Клик по кнопке плеер
         holder.playBtn.setOnClickListener(v -> {
-            fetchAudioUrlAndPlay(sura.getId(), holder);
+            fetchAudioUrlAndPlay(arabText.getId(), holder);
         });
     }
 
@@ -124,7 +129,6 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.SuraViewHolder
         // Используем базовый URL БЕЗ /quran/, так как мы добавили его в интерфейс
         SuraAudioInterface service = RetrofitClient.getClient("https://bba7k5bpe2kl91r7r8qk.containers.yandexcloud.net/")
                 .create(SuraAudioInterface.class);
-
         service.getSuraAudio(riwayahType, reciterName, bitrate, suraIdStr).enqueue(new Callback<SuraAydio>() {
             @Override
             public void onResponse(Call<SuraAydio> call, Response<SuraAydio> response) {
@@ -155,7 +159,7 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.SuraViewHolder
 
     @Override
     public int getItemCount() {
-        return suraList != null ? suraList.size() : 0;
+        return arabText != null ? arabText.size() : 0;
     }
 
     public static class SuraViewHolder extends RecyclerView.ViewHolder {

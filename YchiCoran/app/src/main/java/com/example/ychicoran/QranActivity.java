@@ -43,7 +43,7 @@ public class QranActivity extends BaseActivity {
 
         // Берем готовый список из MainActivity и ставим его в адаптер
         if (ParsingFails.systemList != null) {
-            SuraAdapter adapter = new SuraAdapter(ParsingFails.systemList, this);
+            SuraAdapter adapter = new SuraAdapter(ParsingFails.arabText, ParsingFails.transcriptionSuraList,this);
             recyclerView.setAdapter(adapter);
         }
     }
