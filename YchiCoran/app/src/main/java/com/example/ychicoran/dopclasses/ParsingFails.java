@@ -8,11 +8,13 @@ import com.example.ychicoran.ApiQuranJson.Intrface.SuraListInterface;
 import com.example.ychicoran.Api_Al_Qrai.Class.Reciters.Reciter;
 import com.example.ychicoran.Api_Al_Qrai.Class.Text.ArabText;
 import com.example.ychicoran.Api_Al_Qrai.Class.Text.TranscriptionSura;
+import com.example.ychicoran.Api_Al_Qrai.Class.Text.TranslateSura;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.ArabTextInterface;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.ReciterInterface;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.RiwayahListInterfase;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.TafsirInterface;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.TranscriptionInterface;
+import com.example.ychicoran.Api_Al_Qrai.Interfases.TranslateSuraInterface;
 
 import java.util.List;
 import java.util.Locale;
@@ -29,6 +31,7 @@ public class ParsingFails {
     public static List<String> riwayahList;
     public static List<String> tafsirList;
     public static List<TranscriptionSura> transcriptionSuraList;
+    public static List<TranslateSura> translateSurasList;
     public static List<ArabText> arabText;
 
     public static Reciter recitersData;
@@ -46,6 +49,7 @@ public class ParsingFails {
         parsingTafsirList();
         parsingTranscription();
         parsingArabicText();
+        parsingTranslate();
     }
 
     private void parsingSurash() {
@@ -165,6 +169,23 @@ public class ParsingFails {
             @Override
             public void onFailure(Call<List<ArabText>> call, Throwable t) {
                 System.out.println("Ошибка загрузки Arabic-----------------------------------------------------------------------------------------------");
+                t.printStackTrace();
+            }
+        });
+    }
+    private void parsingTranslate(){
+        TranslateSuraInterface service = RetrofitClient.getClient(url).create(TranslateSuraInterface.class);
+        service.getTranslate(Locale.getDefault().getLanguage()).enqueue(new Callback<List<TranslateSura>>() {
+            @Override
+            public void onResponse(Call<List<TranslateSura>> call, Response<List<TranslateSura>> response) {
+                if (response.isSuccessful() && response.body() != null){
+                    System.out.println("Translate загружен+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    translateSurasList = response.body();
+                }
+            }
+            @Override
+            public void onFailure(Call<List<TranslateSura>> call, Throwable t) {
+                System.out.println("Ошибка загрузки Translate-----------------------------------------------------------------------------------------------");
                 t.printStackTrace();
             }
         });
