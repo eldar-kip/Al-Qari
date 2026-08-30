@@ -7,10 +7,13 @@ import com.example.ychicoran.Api_Al_Qrai.Class.Reciters.Reciter;
 import com.example.ychicoran.Api_Al_Qrai.Class.Text.ArabText;
 import com.example.ychicoran.Api_Al_Qrai.Class.Text.TranscriptionSura;
 import com.example.ychicoran.Api_Al_Qrai.Class.Text.TranslateSura;
+import com.example.ychicoran.Api_Al_Qrai.Class.Timecode.SuraTimestamps;
+import com.example.ychicoran.Api_Al_Qrai.Class.Timecode.VerseTimestamp;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.ArabTextInterface;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.ReciterInterface;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.RiwayahListInterfase;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.TafsirInterface;
+import com.example.ychicoran.Api_Al_Qrai.Interfases.TimestampsInterface;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.TranscriptionInterface;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.TranslateSuraInterface;
 
@@ -33,6 +36,7 @@ public class ParsingFails {
     public static List<TranscriptionSura> transcriptionSuraList;
     public static List<TranslateSura> translateSurasList;
     public static List<ArabText> arabText;
+    public static List<SuraTimestamps> suraTimestampsList ;
 
     public static Reciter recitersData;
     private String url = "https://bba7k5bpe2kl91r7r8qk.containers.yandexcloud.net/";
@@ -77,6 +81,7 @@ public class ParsingFails {
         parsingTranscription();
         parsingArabicText();
         parsingTranslate();
+        parsingTimestamps();
     }
 
     private void parsigRiwayahList(){
@@ -205,5 +210,30 @@ public class ParsingFails {
             }
         });
     }
+    private void parsingTimestamps(){
+
+        SharedPreferences prefs = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        String riwayahType = prefs.getString("riwayah_name", "hafs").toLowerCase();
+        String reciterName = prefs.getString("reciter_name", "muhammad");
+        TimestampsInterface service = RetrofitClient.getClient(url).create(TimestampsInterface.class);
+        service.getSuraTimestamps(riwayahType, reciterName, "32k").enqueue(new Callback<List<SuraTimestamps>>() {
+            @Override
+            public void onResponse(Call<List<SuraTimestamps>> call, Response<List<SuraTimestamps>> response) {
+                if (response.isSuccessful() && response.body() != null){
+                    System.out.println("Timestamps загружен+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    suraTimestampsList = response.body();
+
+                }
+            }
+            @Override
+            public void onFailure(Call<List<SuraTimestamps>> call, Throwable t) {
+                System.out.println("Ошибка загрузки Timestamps-----------------------------------------------------------------------------------------------");
+                t.printStackTrace();
+
+            }
+        });
+
+    }
+
 
 }
