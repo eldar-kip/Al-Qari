@@ -12,6 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ychicoran.Api_Al_Qrai.Class.Text.Verse;
+import com.example.ychicoran.Api_Al_Qrai.Class.Timecode.VerseTimestamp;
 
 import java.util.HashSet;
 import java.util.List;
@@ -22,9 +23,25 @@ public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder
     private final List<Verse> transcription;
     private final List<Verse> arabText;
     private final List<Verse> translate;
+    private final List<VerseTimestamp> verseTimestamps;
     private final String suraId;
     private final Set<Integer> selectedPositions = new HashSet<>();
     private boolean isSelectionMode = false;
+    private int activePosition = -1;
+    public interface OnAyahClickListener {
+        void onAyahClick(int position, VerseTimestamp timestamp);
+    }
+    private OnAyahClickListener ayahClickListener;
+    public void setOnAyahClickListener(OnAyahClickListener listener) {
+        this.ayahClickListener = listener;
+    }
+    public void updateActivePosition(int position) {
+        int previousActivePosition = activePosition;
+        activePosition = position;
+        notifyItemChanged(previousActivePosition);
+        notifyItemChanged(activePosition);
+    }
+
 
     public interface OnSelectionListener {
         void onSelectionChanged(int count);
@@ -47,11 +64,12 @@ public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder
         return new int[]{min, max};
     }
 
-    public AyahAdapter(List<Verse> transcription, List<Verse> arabText, List<Verse> translate, String suraId) {
+    public AyahAdapter(List<Verse> transcription, List<Verse> arabText, List<Verse> translate, List<VerseTimestamp> verseTimestamps, String suraId) {
         this.transcription = transcription;
         this.arabText = arabText;
         this.translate = translate;
         this.suraId = suraId;
+        this.verseTimestamps = verseTimestamps;
     }
 
     @NonNull
@@ -66,11 +84,26 @@ public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder
         Verse arabVerse = arabText.get(position);
         Verse transcrVerse = transcription.get(position);
         Verse translVerse = translate.get(position);
+        VerseTimestamp verseTimestamp = verseTimestamps.get(position);
 
         holder.arabText.setText(arabVerse.getText());
         holder.transcriptionText.setText(transcrVerse.getText());
         holder.translateText.setText(translVerse.getText());
         holder.numberAyah.setText(suraId + ":" + arabVerse.getId());
+        int activeColor = holder.itemView.getContext().getColor(R.color.h2_text_color);
+        int inactiveColor = holder.itemView.getContext().getColor(R.color.standart_txt);
+        if (activePosition == position) {
+            holder.cardView.setCardBackgroundColor(R.drawable.card_gradiend);
+            holder.arabText.setTextColor(activeColor);
+            holder.transcriptionText.setTextColor(activeColor);
+            holder.translateText.setTextColor(activeColor);
+        }
+        else {
+            holder.cardView.setCardBackgroundColor(R.drawable.card_gradiend);
+            holder.arabText.setTextColor(inactiveColor);
+            holder.transcriptionText.setTextColor(inactiveColor);
+            holder.translateText.setTextColor(inactiveColor);
+        }
 
         // Visual feedback for selection
         if (selectedPositions.contains(position)) {
@@ -88,6 +121,9 @@ public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder
         holder.itemView.setOnClickListener(v -> {
             if (isSelectionMode) {
                 toggleSelection(position);
+            }else if (ayahClickListener != null) {
+                // Если не в режиме выделения — перематываем аудио
+                ayahClickListener.onAyahClick(position, verseTimestamp);
             }
         });
     }

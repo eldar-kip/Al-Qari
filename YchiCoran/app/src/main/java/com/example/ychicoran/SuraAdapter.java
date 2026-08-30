@@ -80,20 +80,24 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.SuraViewHolder
             Intent intent = new Intent(context, SuraDetals.class);
             intent.putExtra("SURA_ID", String.valueOf(arabText.getId()));
             intent.putExtra("SURA_NAME", arabText.getName());
+            // Передаем URL если эта сура сейчас играет, чтобы в деталях подхватить мгновенно
+            if (arabText.getId() == AudioPlayer.getCurrentSuraId()) {
+                intent.putExtra("SURA_AUDIO_URL", AudioPlayer.getCurrentUrl());
+            }
             context.startActivity(intent);
         });
 
         // Клик по кнопке плеер
         holder.playBtn.setOnClickListener(v -> {
-            fetchAudioUrlAndPlay(arabText.getId(), holder);
+            fetchAudioUrlAndPlay(context, arabText.getId(), holder.playBtn, holder.seekBar, this::notifyDataSetChanged);
         });
     }
 
-    private void fetchAudioUrlAndPlay(int suraId, SuraViewHolder holder) {
+    public static void fetchAudioUrlAndPlay(Context context, int suraId, ImageView playBtn, SeekBar seekBar, Runnable onUpdate) {
         // ЕСЛИ ЭТА СУРА УЖЕ В ПЛЕЕРЕ - ПРОСТО ПЕРЕКЛЮЧАЕМ (ПЛЕЙ/ПАУЗА) МГНОВЕННО
         if (suraId == AudioPlayer.getCurrentSuraId()) {
-            AudioPlayer.playUrl(context, AudioPlayer.getCurrentUrl(), suraId, holder.playBtn, holder.seekBar);
-            notifyDataSetChanged();
+            AudioPlayer.playUrl(context, AudioPlayer.getCurrentUrl(), suraId, playBtn, seekBar);
+            if (onUpdate != null) onUpdate.run();
             return;
         }
 
@@ -136,15 +140,10 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.SuraViewHolder
                     System.out.println("Все работает! URL: " + response.body().getUrl());
                     String audioUrl = response.body().getUrl();
                     // Передаем suraId в playUrl для синхронизации UI
-                    AudioPlayer.playUrl(context, audioUrl, suraId, holder.playBtn, holder.seekBar);
-                    notifyDataSetChanged();
+                    AudioPlayer.playUrl(context, audioUrl, suraId, playBtn, seekBar);
+                    if (onUpdate != null) onUpdate.run();
                 } else {
                     System.out.println("Ошибка API: " + response.code());
-                    try {
-                        if (response.errorBody() != null) {
-                            System.out.println("Error body: " + response.errorBody().string());
-                        }
-                    } catch (Exception e) { e.printStackTrace(); }
                 }
             }
 

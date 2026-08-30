@@ -20,6 +20,15 @@ public class AudioPlayer {
     private static Runnable progressRunnable;
 
     private static SeekBar activeSeekBar;
+    private static OnProgressUpdateListener progressListener;
+
+    public interface OnProgressUpdateListener {
+        void onProgressUpdate(long position);
+    }
+
+    public static void setOnProgressUpdateListener(OnProgressUpdateListener listener) {
+        progressListener = listener;
+    }
 
     public static ExoPlayer getPlayer(Context context) {
         if (player == null) {
@@ -105,7 +114,10 @@ public class AudioPlayer {
                         activeSeekBar.setMax((int) duration);
                         activeSeekBar.setProgress((int) position);
                     }
-                    handler.postDelayed(this, 500); // Обновляем чаще (раз в 0.5 сек)
+                    if (progressListener != null) {
+                        progressListener.onProgressUpdate(position);
+                    }
+                    handler.postDelayed(this, 100); // Обновляем чаще (раз в 0.5 сек)
                 }
             }
         };
@@ -131,5 +143,13 @@ public class AudioPlayer {
             player = null;
         }
         handler.removeCallbacks(progressRunnable);
+    }
+    public static void seekTo(long position) {
+        if (player != null) {
+            player.seekTo(position);
+        }
+    }
+    public static boolean isPlaying() {
+        return player != null && player.isPlaying();
     }
 }
