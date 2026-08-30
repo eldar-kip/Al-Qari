@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +36,17 @@ public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder
         this.selectionListener = listener;
     }
 
+    public int[] getSelectedRange() {
+        if (selectedPositions.isEmpty()) return null;
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        for (int pos : selectedPositions) {
+            if (pos < min) min = pos;
+            if (pos > max) max = pos;
+        }
+        return new int[]{min, max};
+    }
+
     public AyahAdapter(List<Verse> transcription, List<Verse> arabText, List<Verse> translate, String suraId) {
         this.transcription = transcription;
         this.arabText = arabText;
@@ -62,16 +74,14 @@ public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder
 
         // Visual feedback for selection
         if (selectedPositions.contains(position)) {
-            holder.cardView.setCardBackgroundColor(Color.parseColor("#E0E0E0")); // Highlight color
+            holder.mainLayout.setAlpha(0.5f); // Semi-transparent when selected
         } else {
-            holder.cardView.setCardBackgroundColor(Color.WHITE);
+            holder.mainLayout.setAlpha(1.0f);
         }
 
         holder.itemView.setOnLongClickListener(v -> {
-            if (!isSelectionMode) {
-                isSelectionMode = true;
-                toggleSelection(position);
-            }
+            isSelectionMode = true;
+            toggleSelection(position);
             return true;
         });
 
@@ -116,6 +126,7 @@ public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder
     public static class AyahViewHolder extends RecyclerView.ViewHolder {
         TextView arabText, transcriptionText, translateText, numberAyah;
         CardView cardView;
+        LinearLayout mainLayout;
 
         public AyahViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -124,6 +135,7 @@ public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder
             translateText = itemView.findViewById(R.id.ayah_translate_text);
             numberAyah = itemView.findViewById(R.id.number_ayah);
             cardView = (CardView) itemView;
+            mainLayout = itemView.findViewById(R.id.ayah_main_layout);
         }
     }
 }

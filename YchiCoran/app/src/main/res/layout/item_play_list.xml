@@ -35,6 +35,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sura_name_transcription" />
     <TextView
+        android:id="@+id/sura_name_arabic"
         android:text="الفاتحة"
         android:textStyle="normal"
         android:textSize="22dp"

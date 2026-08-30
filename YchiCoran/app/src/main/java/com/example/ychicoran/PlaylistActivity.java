@@ -10,8 +10,21 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.ychicoran.dopclasses.BaseActivity;
 import com.example.ychicoran.dopclasses.NavigationProject;
+import com.example.ychicoran.utils.PlaylistManager;
+import com.example.ychicoran.models.PlaylistItem;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.List;
+import android.widget.Button;
+import android.view.View;
 
 public class PlaylistActivity extends BaseActivity {
+
+    private RecyclerView recyclerView;
+    private PlaylistAdapter adapter;
+    private PlaylistManager playlistManager;
+    private Button btnDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +36,37 @@ public class PlaylistActivity extends BaseActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-}
 
+        recyclerView = findViewById(R.id.recycler_playlist);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        btnDelete = findViewById(R.id.btn_delete_selected_playlists);
+
+        playlistManager = new PlaylistManager(this);
+        List<PlaylistItem> playlists = playlistManager.getPlaylists();
+        
+        adapter = new PlaylistAdapter(playlists, this);
+        recyclerView.setAdapter(adapter);
+
+        adapter.setOnSelectionListener(count -> {
+            if (btnDelete != null) {
+                btnDelete.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+            }
+        });
+
+        if (btnDelete != null) {
+            btnDelete.setOnClickListener(v -> {
+                List<Integer> selected = adapter.getSelectedPositions();
+                playlistManager.deletePlaylists(selected);
+                
+                // Обновляем список айтемов
+                selected.sort((a, b) -> b - a);
+                for (int pos : selected) {
+                    playlists.remove((int) pos);
+                }
+                
+                adapter.clearSelection();
+            });
+        }
+    }
 }
 
