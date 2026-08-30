@@ -44,20 +44,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/number_ayah"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/bottom_ayah_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="5dp"
-            android:gravity="end"
-            android:text="2:255"
-            android:textColor="#FFD700"
-            android:textSize="16sp"
-            android:layout_gravity="end"
-            android:layout_marginRight="10dp"/>
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="5dp"
+            android:gravity="center_vertical"> <!-- Добавлено для выравнивания по вертикали -->
 
+            <ImageView
+                android:id="@+id/tafsir_information"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_tafsir_setting"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
 
+            <!-- Элемент-распорка -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/number_ayah"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2:255"
+                android:textColor="#FFD700"
+                android:textSize="16sp" />
+
+        </LinearLayout>
     </LinearLayout>
 
 

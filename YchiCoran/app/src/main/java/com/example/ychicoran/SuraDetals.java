@@ -29,7 +29,16 @@ import android.widget.Toast;
 import android.widget.SeekBar;
 import android.widget.ImageView;
 import android.view.ViewGroup;
-import com.example.ychicoran.dopclasses.AudioPlayer;
+import android.content.Context;
+import android.content.SharedPreferences;
+import com.example.ychicoran.Api_Al_Qrai.Class.Text.TasfirText;
+import com.example.ychicoran.Api_Al_Qrai.Interfases.TasfirTextInterface;
+import com.example.ychicoran.dopclasses.RetrofitClient;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SuraDetals extends BaseActivity {
 
@@ -124,6 +133,10 @@ public class SuraDetals extends BaseActivity {
             adapter = new AyahAdapter(transcrVerses, arabVerses, translVerses, verseTimestamps, suraIdStr);
             recyclerView.setAdapter(adapter);
 
+            adapter.setOnTafsirClickListener(ayahId -> {
+                showTafsirBottomSheet(suraId, ayahId);
+            });
+
             String finalNameRussian = nameRussian;
             String finalNameArabic = nameArabic;
             adapter.setOnAyahClickListener((position, timestamp) -> {
@@ -187,6 +200,51 @@ public class SuraDetals extends BaseActivity {
                     }
                     break;
                 }
+            }
+        });
+    }
+
+    private void showTafsirBottomSheet(int suraId, int ayahId) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view = getLayoutInflater().inflate(R.layout.bottom_sheet_tafsir, null);
+
+        TextView title = view.findViewById(R.id.tafsir_title);
+        TextView contentText = view.findViewById(R.id.tafsir_text);
+
+        title.setText("Тафсир аята " + suraId + ":" + ayahId);
+        contentText.setText("Загрузка...");
+
+        bottomSheetDialog.setContentView(view);
+        bottomSheetDialog.show();
+
+        SharedPreferences prefs = getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        String tafsirEdition = prefs.getString("tafsir_name", "saadi"); // Default to saadi
+
+        TasfirTextInterface service = RetrofitClient.getClient("https://bba7k5bpe2kl91r7r8qk.containers.yandexcloud.net/")
+                .create(TasfirTextInterface.class);
+
+        service.getTasfirText(tafsirEdition, suraId).enqueue(new Callback<TasfirText>() {
+            @Override
+            public void onResponse(Call<TasfirText> call, Response<TasfirText> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Verse> verses = response.body().getVerses();
+                    if (verses != null) {
+                        for (Verse v : verses) {
+                            if (v.getId() == ayahId) {
+                                contentText.setText(v.getText());
+                                return;
+                            }
+                        }
+                    }
+                    contentText.setText("Тафсир не найден для данного аята.");
+                } else {
+                    contentText.setText("Ошибка загрузки: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TasfirText> call, Throwable t) {
+                contentText.setText("Ошибка сети: " + t.getMessage());
             }
         });
     }

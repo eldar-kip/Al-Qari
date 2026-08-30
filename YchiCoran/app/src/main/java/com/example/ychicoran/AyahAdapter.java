@@ -31,9 +31,17 @@ public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder
     public interface OnAyahClickListener {
         void onAyahClick(int position, VerseTimestamp timestamp);
     }
+    public interface OnTafsirClickListener {
+        void onTafsirClick(int ayahId);
+    }
     private OnAyahClickListener ayahClickListener;
+    private OnTafsirClickListener tafsirClickListener;
+
     public void setOnAyahClickListener(OnAyahClickListener listener) {
         this.ayahClickListener = listener;
+    }
+    public void setOnTafsirClickListener(OnTafsirClickListener listener) {
+        this.tafsirClickListener = listener;
     }
     public void updateActivePosition(int position) {
         int previousActivePosition = activePosition;
@@ -126,6 +134,12 @@ public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder
                 ayahClickListener.onAyahClick(position, verseTimestamp);
             }
         });
+
+        holder.tafsirBtn.setOnClickListener(v -> {
+            if (tafsirClickListener != null) {
+                tafsirClickListener.onTafsirClick(arabVerse.getId());
+            }
+        });
     }
 
     private void toggleSelection(int position) {
@@ -163,6 +177,7 @@ public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder
         TextView arabText, transcriptionText, translateText, numberAyah;
         CardView cardView;
         LinearLayout mainLayout;
+        View tafsirBtn;
 
         public AyahViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -172,6 +187,7 @@ public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder
             numberAyah = itemView.findViewById(R.id.number_ayah);
             cardView = (CardView) itemView;
             mainLayout = itemView.findViewById(R.id.ayah_main_layout);
+            tafsirBtn = itemView.findViewById(R.id.tafsir_information);
         }
     }
 }
