@@ -32,12 +32,24 @@
 
             <!-- Время Фаджра -->
             <TextView
-                android:id="@+id/tv_fajr_time"
+                android:id="@+id/current_prayer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="serif"
-                android:text="Время Фаджра через\n1:45"
+                android:text="Сейчас Зухр намаз"
+                android:textColor="@color/h1_text_color"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/next_prayer_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="serif"
+                android:text="Начало Фаджир через:\n1:45"
                 android:textColor="@color/standart_txt"
                 android:textSize="28sp"
                 android:textStyle="bold" />
