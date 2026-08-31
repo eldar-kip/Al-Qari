@@ -42,7 +42,7 @@ public class PlaylistActivity extends BaseActivity {
         recyclerView = findViewById(R.id.recycler_playlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         btnDelete = findViewById(R.id.btn_delete_selected_playlists);
-        btnCreate = findViewById(R.id.btn_create_playlist);
+        //btnCreate = findViewById(R.id.btn_create_playlist);
 
         playlistManager = new PlaylistManager(this);
         List<PlaylistItem> playlists = playlistManager.getPlaylists();

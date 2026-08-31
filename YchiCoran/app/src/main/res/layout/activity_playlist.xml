@@ -32,24 +32,24 @@
         android:id="@+id/linearLayout2"
         layout="@layout/down_navbar" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_create_playlist"
-        android:layout_width="wrap_content"
-        android:layout_height="56dp"
-        android:layout_margin="16dp"
-        android:paddingHorizontal="24dp"
-        android:text="@string/create_playlist"
-        android:textAllCaps="false"
-        android:textSize="16sp"
-        android:fontFamily="@font/inter"
-        android:textColor="@color/white"
-        app:backgroundTint="@color/background_activ_element"
-        app:cornerRadius="28dp"
-        app:icon="@android:drawable/ic_input_add"
-        app:iconPadding="8dp"
-        app:elevation="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintStart_toStartOf="parent" />
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/btn_create_playlist"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="56dp"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:paddingHorizontal="24dp"-->
+<!--        android:text="@string/create_playlist"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textSize="16sp"-->
+<!--        android:fontFamily="@font/inter"-->
+<!--        android:textColor="@color/white"-->
+<!--        app:backgroundTint="@color/background_activ_element"-->
+<!--        app:cornerRadius="28dp"-->
+<!--        app:icon="@android:drawable/ic_input_add"-->
+<!--        app:iconPadding="8dp"-->
+<!--        app:elevation="4dp"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_delete_selected_playlists"
