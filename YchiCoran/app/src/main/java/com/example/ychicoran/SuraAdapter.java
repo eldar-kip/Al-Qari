@@ -99,6 +99,7 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.SuraViewHolder
 
         // Клик по кнопке плеер
         holder.playBtn.setOnClickListener(v -> {
+            AudioPlayer.clearPlaybackRange();
             fetchAudioUrlAndPlay(context, arabText.getId(), holder.playBtn, holder.seekBar, this::notifyDataSetChanged, -1);
         });
     }

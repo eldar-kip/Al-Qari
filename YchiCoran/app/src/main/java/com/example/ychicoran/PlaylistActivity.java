@@ -79,5 +79,13 @@ public class PlaylistActivity extends BaseActivity {
             });
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adapter != null) {
+            adapter.setupAudioListener();
+        }
+    }
 }
 

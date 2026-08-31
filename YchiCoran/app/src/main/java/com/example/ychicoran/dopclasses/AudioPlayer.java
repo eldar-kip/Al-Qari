@@ -21,6 +21,8 @@ public class AudioPlayer {
 
     private static SeekBar activeSeekBar;
     private static OnProgressUpdateListener progressListener;
+    private static long rangeStartMs = 0;
+    private static long rangeEndMs = -1;
 
     public interface OnProgressUpdateListener {
         void onProgressUpdate(long position);
@@ -28,6 +30,16 @@ public class AudioPlayer {
 
     public static void setOnProgressUpdateListener(OnProgressUpdateListener listener) {
         progressListener = listener;
+    }
+
+    public static void setPlaybackRange(long startMs, long endMs) {
+        rangeStartMs = startMs;
+        rangeEndMs = endMs;
+    }
+
+    public static void clearPlaybackRange() {
+        rangeStartMs = 0;
+        rangeEndMs = -1;
     }
 
     public static ExoPlayer getPlayer(Context context) {
@@ -74,9 +86,11 @@ public class AudioPlayer {
 
     public static void attachSeekBar(SeekBar seekBar) {
         activeSeekBar = seekBar;
-        if (player != null && (player.isPlaying() || player.getPlayWhenReady())) {
+        if (player != null) {
             setupSeekBar(player, seekBar);
-            startProgressUpdate();
+            if (player.isPlaying() || player.getPlayWhenReady()) {
+                startProgressUpdate();
+            }
         }
     }
 
@@ -86,7 +100,11 @@ public class AudioPlayer {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    exoPlayer.seekTo(progress);
+                    if (rangeEndMs > 0) {
+                        exoPlayer.seekTo(rangeStartMs + progress);
+                    } else {
+                        exoPlayer.seekTo(progress);
+                    }
                 }
             }
             @Override
@@ -101,23 +119,38 @@ public class AudioPlayer {
     }
 
     private static void startProgressUpdate() {
-        if (activeSeekBar == null || player == null) return;
+        if (player == null) return;
 
         handler.removeCallbacks(progressRunnable);
         progressRunnable = new Runnable() {
             @Override
             public void run() {
-                if (player != null && (player.isPlaying() || player.getPlaybackState() == Player.STATE_BUFFERING) && activeSeekBar != null) {
+                if (player != null && (player.isPlaying() || player.getPlaybackState() == Player.STATE_BUFFERING)) {
                     long duration = player.getDuration();
                     long position = player.getCurrentPosition();
-                    if (duration > 0) {
-                        activeSeekBar.setMax((int) duration);
-                        activeSeekBar.setProgress((int) position);
+
+                    // Остановка если вышли за пределы диапазона
+                    if (rangeEndMs > 0 && position >= rangeEndMs) {
+                        player.pause();
+                        if (progressListener != null) progressListener.onProgressUpdate(position);
+                        return;
                     }
+
+                    if (activeSeekBar != null) {
+                        if (rangeEndMs > 0) {
+                            long rangeDuration = rangeEndMs - rangeStartMs;
+                            activeSeekBar.setMax((int) rangeDuration);
+                            activeSeekBar.setProgress((int) (position - rangeStartMs));
+                        } else if (duration > 0) {
+                            activeSeekBar.setMax((int) duration);
+                            activeSeekBar.setProgress((int) position);
+                        }
+                    }
+                    
                     if (progressListener != null) {
                         progressListener.onProgressUpdate(position);
                     }
-                    handler.postDelayed(this, 100); // Обновляем чаще (раз в 0.5 сек)
+                    handler.postDelayed(this, 100);
                 }
             }
         };
