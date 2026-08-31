@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat;
 import com.example.ychicoran.dopclasses.BaseActivity;
 import com.example.ychicoran.dopclasses.NavigationProject;
 import com.example.ychicoran.dopclasses.TimeNamaz;
+import com.example.ychicoran.utils.AppUsageTracker;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.card.MaterialCardView;
@@ -30,6 +31,11 @@ public class HomeActivity extends BaseActivity {
     private MaterialCardView cardContinueReading;
     private TextView tvSuraName;
     private TextView tvAyatInfo;
+
+    // Элементы карточки "Цель на сегодня"
+    private android.widget.ProgressBar progressGoal;
+    private TextView tvGoalPercentage;
+    private TextView tvAppUsageTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +52,29 @@ public class HomeActivity extends BaseActivity {
         tvSuraName = findViewById(R.id.tv_sura_name);
         tvAyatInfo = findViewById(R.id.tv_ayat_info);
 
+        // Инициализация UI карточки цели
+        progressGoal = findViewById(R.id.progress_goal);
+        tvGoalPercentage = findViewById(R.id.tv_goal_percentage);
+        tvAppUsageTime = findViewById(R.id.app_open_time);
+
         NavigationProject.setup(this);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         updatePrayerTimes();
         updateLastReadCard();
+        updateUsageGoal();
+    }
+
+    private void updateUsageGoal() {
+        int minutesUsed = AppUsageTracker.getTodayUsageMinutes(this);
+        int goalMinutes = 20; // Можно потом вынести в настройки
+
+        int percentage = (int) ((minutesUsed / (float) goalMinutes) * 100);
+        if (percentage > 100) percentage = 100;
+
+        progressGoal.setProgress(percentage);
+        tvGoalPercentage.setText(percentage + "%");
+        tvAppUsageTime.setText(minutesUsed + " / " + goalMinutes + " минут");
     }
 
     private void updateLastReadCard() {
@@ -101,5 +125,6 @@ public class HomeActivity extends BaseActivity {
         super.onResume();
         updatePrayerTimes();
         updateLastReadCard();
+        updateUsageGoal();
     }
 }

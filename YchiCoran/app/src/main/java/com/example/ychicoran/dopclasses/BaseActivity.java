@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.ychicoran.R;
+import com.example.ychicoran.utils.AppUsageTracker;
 
 public abstract class BaseActivity extends AppCompatActivity {
     @Override
@@ -28,6 +29,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onPostCreate(savedInstanceState);
         getWindow().getDecorView().setBackgroundResource(R.color.background_layout);
         NavigationProject.setup(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AppUsageTracker.startTracking();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        AppUsageTracker.stopTracking(this);
     }
 
 
