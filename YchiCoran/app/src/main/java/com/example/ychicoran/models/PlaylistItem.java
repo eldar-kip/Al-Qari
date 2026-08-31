@@ -2,26 +2,16 @@ package com.example.ychicoran.models;
 
 public class PlaylistItem {
     private final String suraId;
-    private final int startAyahIndex;
-    private final int endAyahIndex;
-    private final String suraNameRussian;
-    private final String suraNameArabic;
+    private final int startAyah;
+    private final int endAyah;
 
-    public PlaylistItem(String suraId, int startAyahIndex, int endAyahIndex, String suraNameRussian, String suraNameArabic) {
+    public PlaylistItem(String suraId, int startAyah, int endAyah) {
         this.suraId = suraId;
-        this.startAyahIndex = startAyahIndex;
-        this.endAyahIndex = endAyahIndex;
-        this.suraNameRussian = suraNameRussian;
-        this.suraNameArabic = suraNameArabic;
+        this.startAyah = startAyah;
+        this.endAyah = endAyah;
     }
 
     public String getSuraId() { return suraId; }
-    public int getStartAyahIndex() { return startAyahIndex; }
-    public int getEndAyahIndex() { return endAyahIndex; }
-    public String getSuraNameRussian() { return suraNameRussian; }
-    public String getSuraNameArabic() { return suraNameArabic; }
-    
-    public String getRangeString() {
-        return "Сура " + suraId + ": Аяты " + (startAyahIndex + 1) + "-" + (endAyahIndex + 1);
-    }
+    public int getStartAyah() { return startAyah; }
+    public int getEndAyah() { return endAyah; }
 }

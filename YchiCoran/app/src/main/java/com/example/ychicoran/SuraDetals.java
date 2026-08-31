@@ -163,7 +163,7 @@ public class SuraDetals extends BaseActivity {
                 btnSavePlaylist.setOnClickListener(v -> {
                     int[] range = adapter.getSelectedRange();
                     if (range != null) {
-                        PlaylistItem item = new PlaylistItem(suraIdStr, range[0], range[1], finalNameRussian, "");
+                        PlaylistItem item = new PlaylistItem(suraIdStr, range[0] + 1, range[1] + 1);
                         playlistManager.savePlaylist(item);
                         Toast.makeText(this, R.string.playlist_created, Toast.LENGTH_SHORT).show();
                         adapter.clearSelection();

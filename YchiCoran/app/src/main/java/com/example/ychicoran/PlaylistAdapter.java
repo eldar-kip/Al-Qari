@@ -10,6 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ychicoran.Api_Al_Qrai.Class.Text.ArabText;
+import com.example.ychicoran.Api_Al_Qrai.Class.Text.TranslateSura;
+import com.example.ychicoran.dopclasses.ParsingFails;
 import com.example.ychicoran.models.PlaylistItem;
 import com.example.ychicoran.utils.PlaylistManager;
 
@@ -64,9 +67,25 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
     public void onBindViewHolder(@NonNull PlaylistViewHolder holder, int position) {
         PlaylistItem item = playlists.get(position);
 
-        holder.nameRussian.setText(item.getSuraNameRussian());
-        holder.nameArabic.setText(item.getSuraNameArabic());
-        holder.rangeText.setText(item.getRangeString());
+        String suraId = item.getSuraId();
+        int suraIndex = Integer.parseInt(suraId) - 1;
+
+        String nameDisplay = context.getString(R.string.sura) + " " + suraId;
+        String nameArabic = "";
+
+        if (ParsingFails.transcriptionSuraList != null && suraIndex >= 0 && suraIndex < ParsingFails.transcriptionSuraList.size()) {
+            nameDisplay = ParsingFails.transcriptionSuraList.get(suraIndex).getName();
+        }
+        if (ParsingFails.arabText != null && suraIndex >= 0 && suraIndex < ParsingFails.arabText.size()) {
+            nameArabic = ParsingFails.arabText.get(suraIndex).getName();
+        }
+
+        holder.nameRussian.setText(nameDisplay);
+        holder.nameArabic.setText(nameArabic);
+        
+        String rangeStr = context.getString(R.string.sura) + " " + suraId + ": " + 
+                         context.getString(R.string.ayat) + " " + item.getStartAyah() + "-" + item.getEndAyah();
+        holder.rangeText.setText(rangeStr);
 
         // Visual feedback for selection
         if (selectedPositions.contains(position)) {
@@ -81,8 +100,8 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
             } else {
                 Intent intent = new Intent(context, SuraDetals.class);
                 intent.putExtra("SURA_ID", item.getSuraId());
-                intent.putExtra("START_INDEX", item.getStartAyahIndex());
-                intent.putExtra("END_INDEX", item.getEndAyahIndex());
+                intent.putExtra("START_AYAH", item.getStartAyah());
+                // Можно добавить поддержку END_AYAH в SuraDetals позже, если нужно
                 context.startActivity(intent);
             }
         });
