@@ -101,7 +101,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
                 Intent intent = new Intent(context, SuraDetals.class);
                 intent.putExtra("SURA_ID", item.getSuraId());
                 intent.putExtra("START_AYAH", item.getStartAyah());
-                // Можно добавить поддержку END_AYAH в SuraDetals позже, если нужно
+                intent.putExtra("END_AYAH", item.getEndAyah());
                 context.startActivity(intent);
             }
         });

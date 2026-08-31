@@ -99,14 +99,21 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.SuraViewHolder
 
         // Клик по кнопке плеер
         holder.playBtn.setOnClickListener(v -> {
-            fetchAudioUrlAndPlay(context, arabText.getId(), holder.playBtn, holder.seekBar, this::notifyDataSetChanged);
+            fetchAudioUrlAndPlay(context, arabText.getId(), holder.playBtn, holder.seekBar, this::notifyDataSetChanged, -1);
         });
     }
 
-    public static void fetchAudioUrlAndPlay(Context context, int suraId, ImageView playBtn, SeekBar seekBar, Runnable onUpdate) {
+    public static void fetchAudioUrlAndPlay(Context context, int suraId, ImageView playBtn, SeekBar seekBar, Runnable onUpdate, long startPositionMs) {
         // ЕСЛИ ЭТА СУРА УЖЕ В ПЛЕЕРЕ - ПРОСТО ПЕРЕКЛЮЧАЕМ (ПЛЕЙ/ПАУЗА) МГНОВЕННО
         if (suraId == AudioPlayer.getCurrentSuraId()) {
-            AudioPlayer.playUrl(context, AudioPlayer.getCurrentUrl(), suraId, playBtn, seekBar);
+            if (startPositionMs != -1) {
+                AudioPlayer.seekTo(startPositionMs);
+                if (!AudioPlayer.isPlaying()) {
+                    AudioPlayer.playUrl(context, AudioPlayer.getCurrentUrl(), suraId, playBtn, seekBar);
+                }
+            } else {
+                AudioPlayer.playUrl(context, AudioPlayer.getCurrentUrl(), suraId, playBtn, seekBar);
+            }
             if (onUpdate != null) onUpdate.run();
             return;
         }
@@ -151,6 +158,9 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.SuraViewHolder
                     String audioUrl = response.body().getUrl();
                     // Передаем suraId в playUrl для синхронизации UI
                     AudioPlayer.playUrl(context, audioUrl, suraId, playBtn, seekBar);
+                    if (startPositionMs != -1) {
+                        AudioPlayer.seekTo(startPositionMs);
+                    }
                     if (onUpdate != null) onUpdate.run();
                 } else {
                     System.out.println("Ошибка API: " + response.code());

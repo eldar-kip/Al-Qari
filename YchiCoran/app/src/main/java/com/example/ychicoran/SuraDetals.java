@@ -90,22 +90,32 @@ public class SuraDetals extends BaseActivity {
             if (AudioPlayer.isPlaying()) {
                 playPauseImg.setImageResource(R.drawable.media_playr_pause);
             }
+            
+            // Если пришли из плейлиста, перематываем на начало диапазона
+            int startAyah = getIntent().getIntExtra("START_AYAH", -1);
+            int endAyah = getIntent().getIntExtra("END_AYAH", -1);
+            if (startAyah > 0 && endAyah > 0 && suraTimestampsList != null) {
+                List<VerseTimestamp> timestamps = suraTimestampsList.get(suraIndex).getVerses();
+                if (startAyah <= timestamps.size()) {
+                    AudioPlayer.seekTo((long)(timestamps.get(startAyah - 1).getStart() * 1000));
+                }
+            }
         }
 
-        String nameArabic = "";
-        String nameRussian = "";
+        String nameArabicDisplay = "";
+        String nameRussianDisplay = "";
 
         if (translateSurasList != null && suraIndex < translateSurasList.size()) {
-            nameRussian = translateSurasList.get(suraIndex).getName();
-            if (titleTranslate != null) titleTranslate.setText(nameRussian);
+            nameRussianDisplay = translateSurasList.get(suraIndex).getName();
+            if (titleTranslate != null) titleTranslate.setText(nameRussianDisplay);
         }
         if (transcriptionSuraList != null && suraIndex < transcriptionSuraList.size()) {
             if (titleTransliteration != null)
                 titleTransliteration.setText(transcriptionSuraList.get(suraIndex).getName());
         }
         if (arabText != null && suraIndex < arabText.size()) {
-            nameArabic = arabText.get(suraIndex).getName();
-            if (titleArabic != null) titleArabic.setText(nameArabic);
+            nameArabicDisplay = arabText.get(suraIndex).getName();
+            if (titleArabic != null) titleArabic.setText(nameArabicDisplay);
         }
 
         if (arabText != null && transcriptionSuraList != null && translateSurasList != null &&
@@ -115,6 +125,24 @@ public class SuraDetals extends BaseActivity {
             List<Verse> transcrVerses = transcriptionSuraList.get(suraIndex).getVerses();
             List<Verse> translVerses = translateSurasList.get(suraIndex).getVerses();
             List<VerseTimestamp> verseTimestamps = suraTimestampsList.get(suraIndex).getVerses();
+
+            // Проверка на диапазон (из плейлиста)
+            final int startAyah = intent.getIntExtra("START_AYAH", -1);
+            final int endAyah = intent.getIntExtra("END_AYAH", -1);
+
+            if (startAyah > 0 && endAyah > 0) {
+                // Фильтруем списки под нужный диапазон
+                int startIndex = Math.max(0, startAyah - 1);
+                int endIndex = Math.min(arabVerses.size(), endAyah);
+
+                if (startIndex < endIndex) {
+                    arabVerses = arabVerses.subList(startIndex, endIndex);
+                    transcrVerses = transcrVerses.subList(startIndex, endIndex);
+                    translVerses = translVerses.subList(startIndex, endIndex);
+                    verseTimestamps = verseTimestamps.subList(startIndex, endIndex);
+                }
+            }
+
             currentTimestamps[0] = verseTimestamps;
 
             adapter = new AyahAdapter(transcrVerses, arabVerses, translVerses, verseTimestamps, suraIdStr);
@@ -126,9 +154,8 @@ public class SuraDetals extends BaseActivity {
                 }
             });
 
-            // Прокрутка к последнему прочитанному аяту, если передано из HomeActivity
-            int startAyah = intent.getIntExtra("START_AYAH", -1);
-            if (startAyah > 0) {
+            // Прокрутка к аяту (из HomeActivity или если это начало плейлиста)
+            if (startAyah > 0 && endAyah == -1) { // Только скролл (последний прочитанный)
                 int position = startAyah - 1;
                 recyclerView.post(() -> {
                     if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
@@ -140,22 +167,39 @@ public class SuraDetals extends BaseActivity {
                 });
             }
 
-            final String finalNameRussian = nameRussian;
+            final String finalNameRussian = nameRussianDisplay;
+            final List<VerseTimestamp> finalVersesTimestamps = verseTimestamps;
+
             adapter.setOnAyahClickListener((position, timestamp) -> {
-                // Сохраняем последний прочитанный аят
-                saveLastRead(suraIdStr, position + 1, finalNameRussian);
+                // Сохраняем последний прочитанный аят (учитываем смещение, если это плейлист)
+                int actualAyahId = (startAyah > 0 && endAyah > 0) ? (startAyah + position) : (position + 1);
+                saveLastRead(suraIdStr, actualAyahId, finalNameRussian);
 
                 AudioPlayer.seekTo((long) (timestamp.getStart() * 1000));
                 if (!AudioPlayer.isPlaying()) {
-                    SuraAdapter.fetchAudioUrlAndPlay(this, suraId, playPauseImg, audioSeekBar, null);
+                    SuraAdapter.fetchAudioUrlAndPlay(this, suraId, playPauseImg, audioSeekBar, null, 0);
                 }
             });
 
             findViewById(R.id.audio_play_pause).setOnClickListener(v -> {
-                SuraAdapter.fetchAudioUrlAndPlay(this, suraId, playPauseImg, audioSeekBar, null);
+                if (AudioPlayer.getCurrentSuraId() == suraId) {
+                    if (!AudioPlayer.isPlaying() && startAyah > 0 && endAyah > 0) {
+                        AudioPlayer.seekTo((long)(finalVersesTimestamps.get(0).getStart() * 1000));
+                    }
+                    AudioPlayer.playUrl(this, AudioPlayer.getCurrentUrl(), suraId, playPauseImg, audioSeekBar);
+                } else {
+                    long seekMs = (startAyah > 0 && endAyah > 0) ? (long)(finalVersesTimestamps.get(0).getStart() * 1000) : -1;
+                    SuraAdapter.fetchAudioUrlAndPlay(this, suraId, playPauseImg, audioSeekBar, null, seekMs);
+                }
             });
 
-            findViewById(R.id.audio_prev).setOnClickListener(v -> AudioPlayer.seekTo(0));
+            findViewById(R.id.audio_prev).setOnClickListener(v -> {
+                if (startAyah > 0 && endAyah > 0) {
+                     AudioPlayer.seekTo((long)(finalVersesTimestamps.get(0).getStart() * 1000));
+                } else {
+                     AudioPlayer.seekTo(0);
+                }
+            });
 
             adapter.setOnTafsirClickListener(ayahId -> showTafsirBottomSheet(suraId, ayahId));
 
@@ -163,7 +207,12 @@ public class SuraDetals extends BaseActivity {
                 btnSavePlaylist.setOnClickListener(v -> {
                     int[] range = adapter.getSelectedRange();
                     if (range != null) {
-                        PlaylistItem item = new PlaylistItem(suraIdStr, range[0] + 1, range[1] + 1);
+                        // Здесь нужно учитывать, что если список уже отфильтрован, 
+                        // индексы в адаптере начинаются с 0, но соответствуют startIndex в оригинале.
+                        int actualStart = (startAyah > 0) ? (startAyah - 1 + range[0]) : range[0];
+                        int actualEnd = (startAyah > 0) ? (startAyah - 1 + range[1]) : range[1];
+
+                        PlaylistItem item = new PlaylistItem(suraIdStr, actualStart + 1, actualEnd + 1);
                         playlistManager.savePlaylist(item);
                         Toast.makeText(this, R.string.playlist_created, Toast.LENGTH_SHORT).show();
                         adapter.clearSelection();
@@ -172,10 +221,28 @@ public class SuraDetals extends BaseActivity {
             }
         }
 
-        final String finalNameRussianProgress = nameRussian;
+        final String finalNameRussianProgress = nameRussianDisplay;
+
         AudioPlayer.setOnProgressUpdateListener(positionMs -> {
             if (currentTimestamps[0] == null) return;
             double currentTimeSec = positionMs / 1000.0;
+            
+            // Если мы в режиме плейлиста и дошли до конца диапазона
+            int startAyah = getIntent().getIntExtra("START_AYAH", -1);
+            int endAyah = getIntent().getIntExtra("END_AYAH", -1);
+            
+            if (endAyah > 0) {
+                List<VerseTimestamp> originalTimestamps = suraTimestampsList.get(suraIndex).getVerses();
+                if (endAyah <= originalTimestamps.size()) {
+                    double endTime = originalTimestamps.get(endAyah - 1).getEnd();
+                    if (currentTimeSec >= endTime) {
+                        AudioPlayer.pause();
+                        runOnUiThread(() -> playPauseImg.setImageResource(R.drawable.media_playr_play));
+                        return;
+                    }
+                }
+            }
+
             List<VerseTimestamp> timestamps = currentTimestamps[0];
             for (int i = 0; i < timestamps.size(); i++) {
                 VerseTimestamp vt = timestamps.get(i);
@@ -185,7 +252,9 @@ public class SuraDetals extends BaseActivity {
                         runOnUiThread(() -> {
                             adapter.updateActivePosition(finalI);
                             recyclerView.smoothScrollToPosition(finalI);
-                            saveLastRead(suraIdStr, finalI + 1, finalNameRussianProgress);
+                            
+                            int actualAyahId = (startAyah > 0 && endAyah > 0) ? (startAyah + finalI) : (finalI + 1);
+                            saveLastRead(suraIdStr, actualAyahId, finalNameRussianProgress);
                         });
                         lastActiveAyahIndex = i;
                     }
