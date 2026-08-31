@@ -55,6 +55,7 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_continue_reading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
@@ -110,20 +111,11 @@
                     <ImageView
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:alpha="0.3"
+                        android:alpha="0.6"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:src="@drawable/ic_book" />
-
-                    <ImageView
-                        android:id="@+id/play_stop_playr_button"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/media_playr_play"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginTop="10dp"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_ayat_info" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>

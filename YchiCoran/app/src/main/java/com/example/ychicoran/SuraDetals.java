@@ -2,39 +2,39 @@ package com.example.ychicoran;
 
 import static com.example.ychicoran.dopclasses.ParsingFails.suraTimestampsList;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ychicoran.Api_Al_Qrai.Class.Text.ArabText;
+import com.example.ychicoran.Api_Al_Qrai.Class.Text.TasfirText;
 import com.example.ychicoran.Api_Al_Qrai.Class.Text.TranscriptionSura;
 import com.example.ychicoran.Api_Al_Qrai.Class.Text.TranslateSura;
 import com.example.ychicoran.Api_Al_Qrai.Class.Text.Verse;
 import com.example.ychicoran.Api_Al_Qrai.Class.Timecode.SuraTimestamps;
 import com.example.ychicoran.Api_Al_Qrai.Class.Timecode.VerseTimestamp;
+import com.example.ychicoran.Api_Al_Qrai.Interfases.TasfirTextInterface;
 import com.example.ychicoran.dopclasses.AudioPlayer;
 import com.example.ychicoran.dopclasses.BaseActivity;
 import com.example.ychicoran.dopclasses.ParsingFails;
+import com.example.ychicoran.dopclasses.RetrofitClient;
 import com.example.ychicoran.models.PlaylistItem;
 import com.example.ychicoran.utils.PlaylistManager;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;
-import android.widget.Button;
-import android.view.View;
-import android.widget.Toast;
-import android.widget.SeekBar;
-import android.widget.ImageView;
-import android.view.ViewGroup;
-import android.content.Context;
-import android.content.SharedPreferences;
-import com.example.ychicoran.Api_Al_Qrai.Class.Text.TasfirText;
-import com.example.ychicoran.Api_Al_Qrai.Interfases.TasfirTextInterface;
-import com.example.ychicoran.dopclasses.RetrofitClient;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,7 +63,7 @@ public class SuraDetals extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         findViewById(R.id.btn_back_sura).setOnClickListener(v -> finish());
 
-        btnSavePlaylist = findViewById(R.id.btn_save_playlist); // Мы добавим этот ID в layout чуть позже или используем существующий если есть
+        btnSavePlaylist = findViewById(R.id.btn_save_playlist);
         playlistManager = new PlaylistManager(this);
 
         Intent intent = getIntent();
@@ -81,12 +81,10 @@ public class SuraDetals extends BaseActivity {
         TextView titleTransliteration = findViewById(R.id.name_sura_transliteration);
         TextView titleArabic = findViewById(R.id.arabic_name_sura);
 
-        // Плеер
         SeekBar audioSeekBar = findViewById(R.id.audio_seekbar);
         ViewGroup playPauseContainer = findViewById(R.id.audio_play_pause);
         ImageView playPauseImg = (ImageView) playPauseContainer.getChildAt(0);
 
-        // Если сура уже играет — привязываем SeekBar
         if (suraId == AudioPlayer.getCurrentSuraId()) {
             AudioPlayer.attachSeekBar(audioSeekBar);
             if (AudioPlayer.isPlaying()) {
@@ -109,6 +107,7 @@ public class SuraDetals extends BaseActivity {
             nameArabic = arabText.get(suraIndex).getName();
             if (titleArabic != null) titleArabic.setText(nameArabic);
         }
+
         if (arabText != null && transcriptionSuraList != null && translateSurasList != null &&
                 suraIndex >= 0 && suraIndex < arabText.size()) {
 
@@ -118,62 +117,47 @@ public class SuraDetals extends BaseActivity {
             List<VerseTimestamp> verseTimestamps = suraTimestampsList.get(suraIndex).getVerses();
             currentTimestamps[0] = verseTimestamps;
 
-            // Логика фильтрации по диапазону
-            if (intent.hasExtra("START_INDEX") && intent.hasExtra("END_INDEX")) {
-                int start = intent.getIntExtra("START_INDEX", 0);
-                int end = intent.getIntExtra("END_INDEX", arabVerses.size() - 1);
-
-                if (start >= 0 && end < arabVerses.size() && start <= end) {
-                    arabVerses = arabVerses.subList(start, end + 1);
-                    transcrVerses = transcrVerses.subList(start, end + 1);
-                    translVerses = translVerses.subList(start, end + 1);
-                }
-            }
-
             adapter = new AyahAdapter(transcrVerses, arabVerses, translVerses, verseTimestamps, suraIdStr);
             recyclerView.setAdapter(adapter);
 
-            adapter.setOnTafsirClickListener(ayahId -> {
-                showTafsirBottomSheet(suraId, ayahId);
-            });
+            // Прокрутка к последнему прочитанному аяту, если передано из HomeActivity
+            int startAyah = intent.getIntExtra("START_AYAH", -1);
+            if (startAyah > 0) {
+                int position = startAyah - 1;
+                recyclerView.post(() -> {
+                    if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+                        ((LinearLayoutManager) recyclerView.getLayoutManager()).scrollToPositionWithOffset(position, 100);
+                    } else {
+                        recyclerView.scrollToPosition(position);
+                    }
+                    adapter.updateActivePosition(position);
+                });
+            }
 
-            String finalNameRussian = nameRussian;
-            String finalNameArabic = nameArabic;
+            final String finalNameRussian = nameRussian;
             adapter.setOnAyahClickListener((position, timestamp) -> {
-                // Перематываем аудио на начало аята
+                // Сохраняем последний прочитанный аят
+                saveLastRead(suraIdStr, position + 1, finalNameRussian);
+
                 AudioPlayer.seekTo((long) (timestamp.getStart() * 1000));
-                // Если плеер на паузе — запускаем, используя метод из SuraAdapter
                 if (!AudioPlayer.isPlaying()) {
                     SuraAdapter.fetchAudioUrlAndPlay(this, suraId, playPauseImg, audioSeekBar, null);
                 }
             });
 
-            // Кнопка Play/Pause в нижнем плеере
             findViewById(R.id.audio_play_pause).setOnClickListener(v -> {
                 SuraAdapter.fetchAudioUrlAndPlay(this, suraId, playPauseImg, audioSeekBar, null);
             });
 
-            findViewById(R.id.audio_prev).setOnClickListener(v -> {
-                AudioPlayer.seekTo(0);
-            });
+            findViewById(R.id.audio_prev).setOnClickListener(v -> AudioPlayer.seekTo(0));
 
-            adapter.setOnSelectionListener(count -> {
-                if (btnSavePlaylist != null) {
-                    btnSavePlaylist.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
-                }
-            });
+            adapter.setOnTafsirClickListener(ayahId -> showTafsirBottomSheet(suraId, ayahId));
 
             if (btnSavePlaylist != null) {
                 btnSavePlaylist.setOnClickListener(v -> {
                     int[] range = adapter.getSelectedRange();
                     if (range != null) {
-                        PlaylistItem item = new PlaylistItem(
-                                suraIdStr,
-                                range[0],
-                                range[1],
-                                finalNameRussian,
-                                finalNameArabic
-                        );
+                        PlaylistItem item = new PlaylistItem(suraIdStr, range[0], range[1], finalNameRussian, "");
                         playlistManager.savePlaylist(item);
                         Toast.makeText(this, "Сохранено в плейлист", Toast.LENGTH_SHORT).show();
                         adapter.clearSelection();
@@ -181,12 +165,12 @@ public class SuraDetals extends BaseActivity {
                 });
             }
         }
-        AudioPlayer.setOnProgressUpdateListener(positionMs -> {
-            if (currentTimestamps[0] == null) return; // Защита от пустых данных
 
+        final String finalNameRussianProgress = nameRussian;
+        AudioPlayer.setOnProgressUpdateListener(positionMs -> {
+            if (currentTimestamps[0] == null) return;
             double currentTimeSec = positionMs / 1000.0;
             List<VerseTimestamp> timestamps = currentTimestamps[0];
-
             for (int i = 0; i < timestamps.size(); i++) {
                 VerseTimestamp vt = timestamps.get(i);
                 if (currentTimeSec >= vt.getStart() && currentTimeSec < vt.getEnd()) {
@@ -195,6 +179,7 @@ public class SuraDetals extends BaseActivity {
                         runOnUiThread(() -> {
                             adapter.updateActivePosition(finalI);
                             recyclerView.smoothScrollToPosition(finalI);
+                            saveLastRead(suraIdStr, finalI + 1, finalNameRussianProgress);
                         });
                         lastActiveAyahIndex = i;
                     }
@@ -204,21 +189,27 @@ public class SuraDetals extends BaseActivity {
         });
     }
 
+    private void saveLastRead(String suraId, int ayahId, String suraName) {
+        SharedPreferences prefs = getSharedPreferences("LastRead", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("last_sura_id", suraId);
+        editor.putInt("last_ayah_id", ayahId);
+        editor.putString("last_sura_name", suraName);
+        editor.apply();
+    }
+
     private void showTafsirBottomSheet(int suraId, int ayahId) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View view = getLayoutInflater().inflate(R.layout.bottom_sheet_tafsir, null);
-
         TextView title = view.findViewById(R.id.tafsir_title);
         TextView contentText = view.findViewById(R.id.tafsir_text);
-
         title.setText("Тафсир аята " + suraId + ":" + ayahId);
         contentText.setText("Загрузка...");
-
         bottomSheetDialog.setContentView(view);
         bottomSheetDialog.show();
 
         SharedPreferences prefs = getSharedPreferences("Settings", Context.MODE_PRIVATE);
-        String tafsirEdition = prefs.getString("tafsir_name", "saadi"); // Default to saadi
+        String tafsirEdition = prefs.getString("tafsir_name", "saadi");
 
         TasfirTextInterface service = RetrofitClient.getClient("https://bba7k5bpe2kl91r7r8qk.containers.yandexcloud.net/")
                 .create(TasfirTextInterface.class);
@@ -236,15 +227,15 @@ public class SuraDetals extends BaseActivity {
                             }
                         }
                     }
-                    contentText.setText("Тафсир не найден для данного аята.");
+                    contentText.setText("Тафсир не найден.");
                 } else {
-                    contentText.setText("Ошибка загрузки: " + response.code());
+                    contentText.setText("Ошибка загрузки.");
                 }
             }
 
             @Override
             public void onFailure(Call<TasfirText> call, Throwable t) {
-                contentText.setText("Ошибка сети: " + t.getMessage());
+                contentText.setText("Ошибка сети.");
             }
         });
     }
