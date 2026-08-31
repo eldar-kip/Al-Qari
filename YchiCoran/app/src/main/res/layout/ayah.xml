@@ -25,6 +25,7 @@
             android:padding="10dp"
             android:textSize="16dp"
             android:textStyle="bold"
+            android:textColor="@color/h1_text_color"
             />
         <TextView
             android:id="@+id/ayah_transcription_text"
@@ -36,13 +37,15 @@
             android:padding="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/standart_txt"
             android:justificationMode="inter_word" />
         <TextView
             android:id="@+id/ayah_translate_text"
             android:text="аят"
             android:padding="10dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@color/h1_text_color" />
 
         <LinearLayout
             android:id="@+id/bottom_ayah_layout"
@@ -60,7 +63,8 @@
                 android:src="@drawable/ic_tafsir_setting"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/h1_text_color" />
 
             <!-- Элемент-распорка -->
             <View
@@ -73,7 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2:255"
-                android:textColor="#FFD700"
+                android:textColor="@color/h2_text_color"
                 android:textSize="16sp" />
 
         </LinearLayout>

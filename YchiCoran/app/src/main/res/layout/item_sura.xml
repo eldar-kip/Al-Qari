@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:text="Название"
-            android:textColor="@color/white"
+            android:textColor="@color/h1_text_color"
             android:textSize="34sp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:text="Перевод"
-            android:textColor="@color/white"
+            android:textColor="@color/h1_text_color"
             android:textSize="26sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -80,7 +80,7 @@
                 android:layout_height="30dp"
 
                 app:srcCompat="@android:drawable/ic_media_play"
-                app:tint="@color/white" />
+                app:tint="@color/h1_text_color" />
 
             <SeekBar
                 android:id="@+id/seekBar_item"
@@ -90,16 +90,6 @@
 
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <TextView
-                android:layout_gravity="center"
-                android:id="@+id/ndumber_sura"
-                android:fontFamily="@font/inter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1:30"
-                android:textColor="@color/standart_txt"
-                android:textSize="14sp"
-                android:textStyle="bold" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

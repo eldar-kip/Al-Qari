@@ -39,6 +39,7 @@
         android:text="الفاتحة"
         android:textStyle="normal"
         android:textSize="22dp"
+        android:textColor="@color/h1_text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="wrap_content"
@@ -67,7 +68,8 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            android:src="@drawable/media_playr_play" />
+            android:src="@drawable/media_playr_play"
+            app:tint="@color/h1_text_color" />
 
         <SeekBar
             android:layout_width="250dp"
@@ -79,7 +81,8 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            android:src="@drawable/media_playr_repeat" />
+            android:src="@drawable/media_playr_repeat"
+            app:tint="@color/h1_text_color" />
 
     </LinearLayout>
 

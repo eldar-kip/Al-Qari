@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Тафсир"
-        android:textColor="#FFD700"
+        android:textColor="@color/h2_text_color"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginBottom="12dp"/>
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Загрузка..."
-            android:textColor="#FFFFFF"
+            android:textColor="@color/standart_txt"
             android:textSize="16sp"
             android:lineSpacingExtra="4dp"/>
     </androidx.core.widget.NestedScrollView>

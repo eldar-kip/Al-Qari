@@ -11,5 +11,8 @@
         <color name="h2_text_color">#D4AF37</color>
         <color name="standart_txt">#8FAD9F</color>
 
-
+    <!-- Card Gradient Colors -->
+    <color name="card_gradient_start">#13251C</color>
+    <color name="card_gradient_end">#182C22</color>
+    <color name="card_stroke">#3A4B36</color>
 </resources>

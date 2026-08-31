@@ -99,17 +99,17 @@ public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder
         holder.translateText.setText(translVerse.getText());
         holder.numberAyah.setText(suraId + ":" + arabVerse.getId());
         int activeColor = holder.itemView.getContext().getColor(R.color.h2_text_color);
-        int inactiveColor = holder.itemView.getContext().getColor(R.color.standart_txt);
+        int inactiveColor = holder.itemView.getContext().getColor(R.color.h1_text_color);
+        int secondaryInactiveColor = holder.itemView.getContext().getColor(R.color.standart_txt);
+        
         if (activePosition == position) {
-            holder.cardView.setCardBackgroundColor(R.drawable.card_gradiend);
             holder.arabText.setTextColor(activeColor);
             holder.transcriptionText.setTextColor(activeColor);
             holder.translateText.setTextColor(activeColor);
         }
         else {
-            holder.cardView.setCardBackgroundColor(R.drawable.card_gradiend);
             holder.arabText.setTextColor(inactiveColor);
-            holder.transcriptionText.setTextColor(inactiveColor);
+            holder.transcriptionText.setTextColor(secondaryInactiveColor);
             holder.translateText.setTextColor(inactiveColor);
         }
 

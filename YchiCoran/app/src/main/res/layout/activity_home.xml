@@ -167,7 +167,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="0%"
-                            android:textColor="#DCAE46"
+                            android:textColor="@color/h2_text_color"
                             android:textSize="14sp"
                             android:textStyle="bold" />
                     </FrameLayout>
@@ -183,7 +183,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0 / 20 минут"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/h1_text_color"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -192,7 +192,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="@string/moral_support"
-                            android:textColor="#598C80"
+                            android:textColor="@color/standart_txt"
                             android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
