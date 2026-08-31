@@ -1,11 +1,14 @@
 package com.example.ychicoran.dopclasses;
 
+import android.content.Context;
+
 import com.batoulapps.adhan.CalculationMethod;
 import com.batoulapps.adhan.CalculationParameters;
 import com.batoulapps.adhan.Coordinates;
 import com.batoulapps.adhan.Madhab;
 import com.batoulapps.adhan.PrayerTimes;
 import com.batoulapps.adhan.data.DateComponents;
+import com.example.ychicoran.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,7 +28,7 @@ public class TimeNamaz {
         public String timeRemaining;
     }
 
-    public PrayerResult getPrayerInfo(double latitude, double longitude) {
+    public PrayerResult getPrayerInfo(Context context, double latitude, double longitude) {
         Coordinates coordinates = new Coordinates(latitude, longitude);
         DateComponents dateComponents = DateComponents.from(new Date());
 
@@ -43,12 +46,12 @@ public class TimeNamaz {
         data_list.add(prayerTimes.isha);
 
         List<String> name_namaz = new ArrayList<>();
-        name_namaz.add("Фаджр");
-        name_namaz.add("Восход");
-        name_namaz.add("Зухр");
-        name_namaz.add("Аср");
-        name_namaz.add("Магриб");
-        name_namaz.add("Иша");
+        name_namaz.add(context.getString(R.string.fajr));
+        name_namaz.add(context.getString(R.string.shuruq));
+        name_namaz.add(context.getString(R.string.dhuhr));
+        name_namaz.add(context.getString(R.string.asr));
+        name_namaz.add(context.getString(R.string.Maghrib));
+        name_namaz.add(context.getString(R.string.Isha));
 
         Date now = new Date();
         int index_next = -1;

@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     if (location != null) {
                         double latitude = location.getLatitude();
                         double longitude = location.getLongitude();
-                        new TimeNamaz().getPrayerInfo(latitude, longitude);
+                        new TimeNamaz().getPrayerInfo(this,latitude, longitude);
                     }
                 });
     }

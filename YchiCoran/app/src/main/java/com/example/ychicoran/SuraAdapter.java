@@ -40,7 +40,17 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.SuraViewHolder
         this.context = context;
         this.transcriptionSuraList = transcriptionSuraList;
     }
+    private String typeSura(String type){
+        switch (type){
+            case "meccan":
+                return context.getString(R.string.mecan);
+            case "medinan":
+                return context.getString(R.string.medina);
+            default:
+                return "";
+        }
 
+    }
     @NonNull
     @Override
     public SuraViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,14 +60,14 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.SuraViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull SuraViewHolder holder, int position) {
-        //SuraList sura = arabText.get(position);
         TranscriptionSura transcriptionSura = transcriptionSuraList.get(position);
         ArabText arabText = ParsingFails.arabText.get(position);
 
 
 
-        holder.numberSura.setText("Cура "+String.valueOf(transcriptionSura.getId()));
+        holder.numberSura.setText(context.getString(R.string.sura)+" "+String.valueOf(transcriptionSura.getId()));
         holder.arabName.setText(arabText.getName());
+        holder.suraType.setText(typeSura(arabText.getType())+" \u2022 "+arabText.getTotal_verses()+" "+context.getString(R.string.ayat));
         holder.systemName.setText(transcriptionSura.getName());
 
         // Проверка по ID суры, играет ли она сейчас
@@ -161,7 +171,7 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.SuraViewHolder
     }
 
     public static class SuraViewHolder extends RecyclerView.ViewHolder {
-        TextView numberSura, arabName, systemName;
+        TextView numberSura, arabName, systemName, suraType;
         ImageView playBtn;
         SeekBar seekBar;
 
@@ -172,6 +182,7 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.SuraViewHolder
             systemName = itemView.findViewById(R.id.translation_sura);
             playBtn = itemView.findViewById(R.id.play_pause_item);
             seekBar = itemView.findViewById(R.id.seekBar_item);
+            suraType = itemView.findViewById(R.id.type_countAuyh_sura);
         }
     }
 }

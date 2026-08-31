@@ -20,10 +20,41 @@
     <string name="text_setting_style_text">Реваях</string>
     
     <string name="user_name">Эльдар</string>
-    <string name="user_status">Базовый тариф</string>"
+    <string name="user_status">Базовый тариф</string>
 
     <string name="theme_system">Системная</string>
     <string name="theme_light">Светлая</string>
     <string name="theme_dark">Темная</string>
+
+    <string name="sura">Сура</string>
+    <string name="ayat">Аят</string>
+    <string name="medina">Мединская</string>
+    <string name="mecan">Меканская</string>
+    
+<!-- Текст страницы дом-->
+    <string name="greetings_home_text"> Ассаляму алейкум, </string>
+    <string name="now_prayer">Сейчас</string>
+    <string name="start_time">Начало</string>
+    <string name="through_time_namaz">через</string>
+    <string name="continue_reading">продолжить чтение</string>
+    <string name="goal_for_today">Цель на сегодня</string>
+    <string name="minutes">минут</string>
+    <string name="no_access_GPS">Нет доступа к GPS</string>
+    <string name="location_not_determined">Местоположение не определено</string>
+    <string name="moral_support">Иншаллах, у тебя всё получится</string>
+<!--Намаз и его типы-->
+    <string name="namaz">намаз</string>
+    <string name="fajr">Фаджр</string>
+    <string name="shuruq">Восход</string>
+    <string name="dhuhr">Зухр</string>
+    <string name="asr">Аср</string>
+    <string name="Maghrib">Магриб</string>
+    <string name="Isha">Иша</string>
+    
+    
+
+
+
+    
     
 </resources>

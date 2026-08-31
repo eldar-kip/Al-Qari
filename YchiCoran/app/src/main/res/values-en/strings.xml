@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<resources>
+    <string name="app_name">YchiCoran</string>
+    <string name="zagolovok_1">Enter the first digit here</string>
+    <string name="zagolovok_2">Enter the second digit here</string>
+    <string name="button_calculate">Calculate</string>
+    <string name="result_label">Result: </string>
+    <string name="down_menu_home">Home</string>
+    <string name="down_menu_quran">Quran</string>
+    <string name="down_menu_play_list">Playlist</string>
+    <string name="down_menu_settings">Settings</string>
+    <string name="inter">Inter</string>
+
+    <string name="text_setting_tasfir">Tafsir</string>
+    <string name="text_setting_language">Language</string>
+    <string name="text_setting_theme">Theme</string>
+    <string name="text_setting_reader">Reader</string>
+    <string name="text_setting_style_text">Riwayah</string>
+
+    <string name="title_seting_read" >READING &amp; AUDIO</string>
+    <string name="title_seting_them" >APPEARANCE</string>
+
+
+    <string name="user_name">Eldar</string>
+    <string name="user_status">Basic Plan</string>
+
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+
+    <string name="sura">Surah</string>
+    <string name="ayat">Ayah</string>
+    <string name="medina">Medinan</string>
+    <string name="mecan">Meccan</string>
+
+    <!-- Home page text -->
+    <string name="greetings_home_text"> Assalamu alaikum, </string>
+    <string name="now_prayer">Now</string>
+    <string name="start_time">Start</string>
+    <string name="through_time_namaz">in</string>
+    <string name="continue_reading">continue reading</string>
+    <string name="goal_for_today">Goal for today</string>
+    <string name="minutes">minutes</string>
+    <string name="no_access_GPS">No GPS access</string>
+    <string name="location_not_determined">Location not determined</string>
+    <string name="moral_support">Inshallah, you can do it</string>
+    <!-- Prayer times -->
+    <string name="namaz">namaz</string>
+    <string name="fajr">Fajr</string>
+    <string name="shuruq">Dawn</string>
+    <string name="dhuhr">Dhuhr</string>
+    <string name="asr">Asr</string>
+    <string name="Maghrib">Maghrib</string>
+    <string name="Isha">Isha</string>
+</resources>

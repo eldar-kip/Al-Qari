@@ -74,7 +74,7 @@ public class HomeActivity extends BaseActivity {
 
         progressGoal.setProgress(percentage);
         tvGoalPercentage.setText(percentage + "%");
-        tvAppUsageTime.setText(minutesUsed + " / " + goalMinutes + " минут");
+        tvAppUsageTime.setText(minutesUsed + " / " + goalMinutes + " " + getString(R.string.minutes));
     }
 
     private void updateLastReadCard() {
@@ -86,7 +86,7 @@ public class HomeActivity extends BaseActivity {
         if (suraId != null) {
             cardContinueReading.setVisibility(View.VISIBLE);
             tvSuraName.setText(suraName);
-            tvAyatInfo.setText("Сура " + suraId + " • Аят " + ayahId);
+            tvAyatInfo.setText(getString(R.string.sura) + " " + suraId + " • " + getString(R.string.ayat) + " " + ayahId);
 
             cardContinueReading.setOnClickListener(v -> {
                 Intent intent = new Intent(HomeActivity.this, SuraDetals.class);
@@ -102,20 +102,21 @@ public class HomeActivity extends BaseActivity {
 
     private void updatePrayerTimes() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            currentPrayerTv.setText("Нет доступа к GPS");
+            currentPrayerTv.setText(R.string.no_access_GPS);
             return;
         }
 
         fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
             if (location != null) {
                 TimeNamaz timeNamaz = new TimeNamaz();
-                TimeNamaz.PrayerResult info = timeNamaz.getPrayerInfo(location.getLatitude(), location.getLongitude());
+                TimeNamaz.PrayerResult info = timeNamaz.getPrayerInfo(this, location.getLatitude(), location.getLongitude());
 
-                currentPrayerTv.setText("Сейчас " + info.currentPrayerName + " намаз");
-                String nextInfo = "Начало " + info.nextPrayerName + " через:\n" + info.timeRemaining;
+                String currentInfo = getString(R.string.now_prayer) + " " + info.currentPrayerName + " " + getString(R.string.namaz);
+                currentPrayerTv.setText(currentInfo);
+                String nextInfo = getString(R.string.start_time) + " " + info.nextPrayerName + " " + getString(R.string.through_time_namaz) + ":\n" + info.timeRemaining;
                 nextPrayerTimeTv.setText(nextInfo);
             } else {
-                currentPrayerTv.setText("Местоположение не определено");
+                currentPrayerTv.setText(R.string.location_not_determined);
             }
         });
     }

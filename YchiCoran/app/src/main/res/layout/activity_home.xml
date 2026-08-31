@@ -25,7 +25,7 @@
                 android:id="@+id/tv_greeting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ассаляму алейкум, Амир"
+                android:text="@string/greetings_home_text"
                 android:fontFamily="@font/inter"
                 android:textColor="@color/standart_txt"
                 android:textSize="16sp" />
@@ -74,7 +74,7 @@
                         android:id="@+id/tv_continue_reading"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ПРОДОЛЖИТЬ ЧТЕНИЕ"
+                        android:text="@string/continue_reading"
                         android:textAllCaps="true"
                         android:textColor="@color/h2_text_color"
                         android:textSize="12sp"
@@ -191,7 +191,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="Альхамдулиллях,\nхороший темп!"
+                            android:text="@string/moral_support"
                             android:textColor="#598C80"
                             android:textSize="14sp" />
                     </LinearLayout>
