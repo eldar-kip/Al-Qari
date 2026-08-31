@@ -50,11 +50,7 @@
     <string name="asr">Аср</string>
     <string name="Maghrib">Магриб</string>
     <string name="Isha">Иша</string>
-    
-    
-
-
-
-    
-    
+    <string name="create_playlist">Создать</string>
+    <string name="save_to_playlist">Сохранить</string>
+    <string name="playlist_created">Сохранено в плейлист</string>
 </resources>

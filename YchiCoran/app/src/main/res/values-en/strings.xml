@@ -54,4 +54,7 @@
     <string name="asr">Asr</string>
     <string name="Maghrib">Maghrib</string>
     <string name="Isha">Isha</string>
+    <string name="create_playlist">Create</string>
+    <string name="save_to_playlist">Save</string>
+    <string name="playlist_created">Saved to playlist</string>
 </resources>

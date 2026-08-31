@@ -1,5 +1,6 @@
 package com.example.ychicoran;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -25,6 +26,7 @@ public class PlaylistActivity extends BaseActivity {
     private PlaylistAdapter adapter;
     private PlaylistManager playlistManager;
     private Button btnDelete;
+    private Button btnCreate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class PlaylistActivity extends BaseActivity {
         recyclerView = findViewById(R.id.recycler_playlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         btnDelete = findViewById(R.id.btn_delete_selected_playlists);
+        btnCreate = findViewById(R.id.btn_create_playlist);
 
         playlistManager = new PlaylistManager(this);
         List<PlaylistItem> playlists = playlistManager.getPlaylists();
@@ -52,6 +55,14 @@ public class PlaylistActivity extends BaseActivity {
                 btnDelete.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
             }
         });
+
+        if (btnCreate != null) {
+            btnCreate.setOnClickListener(v -> {
+                Intent intent = new Intent(PlaylistActivity.this, QranActivity.class);
+                startActivity(intent);
+                finish();
+            });
+        }
 
         if (btnDelete != null) {
             btnDelete.setOnClickListener(v -> {

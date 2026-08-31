@@ -120,6 +120,12 @@ public class SuraDetals extends BaseActivity {
             adapter = new AyahAdapter(transcrVerses, arabVerses, translVerses, verseTimestamps, suraIdStr);
             recyclerView.setAdapter(adapter);
 
+            adapter.setOnSelectionListener(count -> {
+                if (btnSavePlaylist != null) {
+                    btnSavePlaylist.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+                }
+            });
+
             // Прокрутка к последнему прочитанному аяту, если передано из HomeActivity
             int startAyah = intent.getIntExtra("START_AYAH", -1);
             if (startAyah > 0) {
@@ -159,7 +165,7 @@ public class SuraDetals extends BaseActivity {
                     if (range != null) {
                         PlaylistItem item = new PlaylistItem(suraIdStr, range[0], range[1], finalNameRussian, "");
                         playlistManager.savePlaylist(item);
-                        Toast.makeText(this, "Сохранено в плейлист", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.playlist_created, Toast.LENGTH_SHORT).show();
                         adapter.clearSelection();
                     }
                 });
