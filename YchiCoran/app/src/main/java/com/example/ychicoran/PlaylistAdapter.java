@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Set;
 
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder> {
-
     private final List<PlaylistItem> playlists;
     private final Context context;
     private final Set<Integer> selectedPositions = new HashSet<>();
