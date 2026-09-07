@@ -31,18 +31,28 @@ public class Reciters_setting {
         String riwayahName = prefs.getString("riwayah_name", "hafs").toLowerCase();
 
         List<String> names = new ArrayList<>();
+        List<String> bitrates = new ArrayList<>();
 
         if (riwayahName.contains("hafs")) {
             if (data.getHafs() != null) {
-                for (Haf h : data.getHafs()) names.add(h.getName());
+                for (Haf h : data.getHafs()) {
+                    names.add(h.getName());
+                    bitrates.add(h.getBitrate());
+                }
             }
         } else if (riwayahName.contains("qaloun")) {
             if (data.getQaloun() != null) {
-                for (Qaloun q : data.getQaloun()) names.add(q.getName());
+                for (Qaloun q : data.getQaloun()) {
+                    names.add(q.getName());
+                    bitrates.add(q.getBitrate());
+                }
             }
         } else if (riwayahName.contains("warsh")) {
             if (data.getWarsh() != null) {
-                for (Warsh w : data.getWarsh()) names.add(w.getName());
+                for (Warsh w : data.getWarsh()) {
+                    names.add(w.getName());
+                    bitrates.add(w.getBitrate());
+                }
             }
         }
 
@@ -64,10 +74,15 @@ public class Reciters_setting {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putInt("reciter_index", position);
-                editor.putString("reciter_name", names.get(position));
-                editor.apply();
+                if (position >= 0 && position < names.size()) {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("reciter_index", position);
+                    editor.putString("reciter_name", names.get(position));
+                    if (position < bitrates.size()) {
+                        editor.putString("reciter_bitrate", bitrates.get(position));
+                    }
+                    editor.apply();
+                }
             }
 
             @Override

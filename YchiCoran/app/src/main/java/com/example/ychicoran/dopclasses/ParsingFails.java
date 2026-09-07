@@ -215,8 +215,9 @@ public class ParsingFails {
         SharedPreferences prefs = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
         String riwayahType = prefs.getString("riwayah_name", "hafs").toLowerCase();
         String reciterName = prefs.getString("reciter_name", "muhammad");
+        String bitrate = prefs.getString("reciter_bitrate", "64k");
         TimestampsInterface service = RetrofitClient.getClient(url).create(TimestampsInterface.class);
-        service.getSuraTimestamps(riwayahType, reciterName, "32k").enqueue(new Callback<List<SuraTimestamps>>() {
+        service.getSuraTimestamps(riwayahType, reciterName, bitrate).enqueue(new Callback<List<SuraTimestamps>>() {
             @Override
             public void onResponse(Call<List<SuraTimestamps>> call, Response<List<SuraTimestamps>> response) {
                 if (response.isSuccessful() && response.body() != null){
