@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ychicoran.Api_Al_Qrai.Class.Text.Verse;
 import com.example.ychicoran.Api_Al_Qrai.Class.Timecode.VerseTimestamp;
+import com.example.ychicoran.dopclasses.audioPlayer.AudioPlayer;
 
 import java.util.HashSet;
 import java.util.List;
@@ -48,6 +49,21 @@ public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder
         activePosition = position;
         notifyItemChanged(previousActivePosition);
         notifyItemChanged(activePosition);
+    }
+
+    /**
+     * Обрабатывает клик по карточке аята: перематывает аудио на начало аята
+     * и подсвечивает его активным в списке.
+     */
+    public void seekToAyah(int position) {
+        if (verseTimestamps != null && position >= 0 && position < verseTimestamps.size()) {
+            VerseTimestamp timestamp = verseTimestamps.get(position);
+            if (timestamp != null) {
+                long seekPositionMs = (long) (timestamp.getStart() * 1000);
+                AudioPlayer.seekTo(seekPositionMs);
+                updateActivePosition(position);
+            }
+        }
     }
 
 
@@ -129,9 +145,11 @@ public class AyahAdapter extends RecyclerView.Adapter<AyahAdapter.AyahViewHolder
         holder.itemView.setOnClickListener(v -> {
             if (isSelectionMode) {
                 toggleSelection(position);
-            }else if (ayahClickListener != null) {
-                // Если не в режиме выделения — перематываем аудио
-                ayahClickListener.onAyahClick(position, verseTimestamp);
+            } else {
+                seekToAyah(position);
+                if (ayahClickListener != null) {
+                    ayahClickListener.onAyahClick(position, verseTimestamp);
+                }
             }
         });
 

@@ -18,7 +18,7 @@ import com.example.ychicoran.Api_Al_Qrai.Class.Reciters.Reciter;
 import com.example.ychicoran.Api_Al_Qrai.Class.Reciters.Warsh;
 import com.example.ychicoran.Api_Al_Qrai.Class.Text.ArabText;
 import com.example.ychicoran.Api_Al_Qrai.Class.Text.TranscriptionSura;
-import com.example.ychicoran.dopclasses.AudioPlayer;
+import com.example.ychicoran.dopclasses.audioPlayer.AudioPlayer;
 import android.widget.SeekBar;
 import android.content.SharedPreferences;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.SuraAudioInterface;

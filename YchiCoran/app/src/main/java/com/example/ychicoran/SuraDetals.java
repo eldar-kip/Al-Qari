@@ -26,7 +26,8 @@ import com.example.ychicoran.Api_Al_Qrai.Class.Text.Verse;
 import com.example.ychicoran.Api_Al_Qrai.Class.Timecode.SuraTimestamps;
 import com.example.ychicoran.Api_Al_Qrai.Class.Timecode.VerseTimestamp;
 import com.example.ychicoran.Api_Al_Qrai.Interfases.TasfirTextInterface;
-import com.example.ychicoran.dopclasses.AudioPlayer;
+import com.example.ychicoran.dopclasses.audioPlayer.AudioPlayer;
+import com.example.ychicoran.dopclasses.audioPlayer.PlayerUiBinder;
 import com.example.ychicoran.dopclasses.BaseActivity;
 import com.example.ychicoran.dopclasses.ParsingFails;
 import com.example.ychicoran.dopclasses.RetrofitClient;
@@ -90,6 +91,17 @@ public class SuraDetals extends BaseActivity {
         SeekBar audioSeekBar = findViewById(R.id.audio_seekbar);
         ViewGroup playPauseContainer = findViewById(R.id.audio_play_pause);
         ImageView playPauseImg = (ImageView) playPauseContainer.getChildAt(0);
+
+        ViewGroup repeatContainer = findViewById(R.id.audio_next);
+        ImageView repeatImg = (repeatContainer != null && repeatContainer.getChildCount() > 0) ? (ImageView) repeatContainer.getChildAt(0) : null;
+        View prevBtn = findViewById(R.id.audio_prev);
+
+        PlayerUiBinder uiBinder = new PlayerUiBinder(
+                AudioPlayer.getController(this),
+                AudioPlayer.getRepeatController(),
+                AudioPlayer.getPrevController()
+        );
+        uiBinder.bindViews(playPauseImg, audioSeekBar, repeatImg, prevBtn);
 
         if (suraId == AudioPlayer.getCurrentSuraId()) {
             AudioPlayer.attachSeekBar(audioSeekBar);

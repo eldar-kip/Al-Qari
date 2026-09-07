@@ -18,7 +18,7 @@ import com.example.ychicoran.Api_Al_Qrai.Class.Text.ArabText;
 import com.example.ychicoran.Api_Al_Qrai.Class.Text.TranslateSura;
 import com.example.ychicoran.Api_Al_Qrai.Class.Timecode.SuraTimestamps;
 import com.example.ychicoran.Api_Al_Qrai.Class.Timecode.VerseTimestamp;
-import com.example.ychicoran.dopclasses.AudioPlayer;
+import com.example.ychicoran.dopclasses.audioPlayer.AudioPlayer;
 import com.example.ychicoran.dopclasses.ParsingFails;
 import com.example.ychicoran.models.PlaylistItem;
 import com.example.ychicoran.utils.PlaylistManager;
