@@ -42,9 +42,9 @@ flowchart TD
 
     %% Логика инференса (Inference Flow)
     UI_InputTables -->|Две таблицы| API
-    API -->|Таблицы + Токен| Matcher
+    API -->|Таблицы и Токен| Matcher
     S3 -->|Выгрузка актуальных весов| AI_Model
     Matcher <-->|Запросы к модели| AI_Model
-    Matcher -->|Возврат пар (Estimate)| Merger
+    Matcher -->|Возврат пар и Estimate| Merger
     API -->|Оригинальные цены| Merger
     Merger -->|Итоговый отчет| UI_OutputTable
